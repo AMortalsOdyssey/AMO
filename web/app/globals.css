@@ -573,6 +573,7 @@ body::before {
     border-color 180ms ease,
     background 180ms ease,
     box-shadow 180ms ease;
+  -webkit-user-drag: none;
 }
 
 .amo-role-card::before {
@@ -638,6 +639,8 @@ body::before {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
 }
 
 .amo-picker-avatar {

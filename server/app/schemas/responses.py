@@ -240,3 +240,5 @@ class StatsOut(BaseModel):
 
 class SiteConfigOut(BaseModel):
     feedback_form_url: str | None = None
+    posthog_public_key: str | None = None
+    posthog_host: str | None = None

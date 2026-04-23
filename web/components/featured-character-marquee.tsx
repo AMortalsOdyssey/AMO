@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { MouseEvent, PointerEvent as ReactPointerEvent } from "react";
+import type {
+  DragEvent as ReactDragEvent,
+  MouseEvent,
+  PointerEvent as ReactPointerEvent,
+} from "react";
 import Link from "next/link";
 
 export type FeaturedCharacterMarqueeItem = {
@@ -14,6 +18,7 @@ export type FeaturedCharacterMarqueeItem = {
 
 type FeaturedCharacterMarqueeProps = {
   characters: FeaturedCharacterMarqueeItem[];
+  onCharacterClick?: (character: FeaturedCharacterMarqueeItem) => void;
 };
 
 const ROW_DIRECTIONS = ["right", "left", "right", "left"] as const;
@@ -59,10 +64,12 @@ function MarqueeRow({
   row,
   direction,
   duration,
+  onCharacterClick,
 }: {
   row: FeaturedCharacterMarqueeItem[];
   direction: MarqueeDirection;
   duration: number;
+  onCharacterClick?: (character: FeaturedCharacterMarqueeItem) => void;
 }) {
   const rowRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
@@ -145,8 +152,19 @@ function MarqueeRow({
     };
   }, [direction, duration]);
 
+  const releasePointerCapture = (pointerId?: number) => {
+    if (pointerId == null || rowRef.current == null) return;
+    if (!rowRef.current.hasPointerCapture(pointerId)) return;
+    rowRef.current.releasePointerCapture(pointerId);
+  };
+
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+
+    const rowElement = rowRef.current;
+    if (rowElement != null) {
+      rowElement.setPointerCapture(event.pointerId);
+    }
 
     pointerDownRef.current = true;
     activePointerIdRef.current = event.pointerId;
@@ -169,16 +187,12 @@ function MarqueeRow({
         return;
       }
 
-      const rowElement = rowRef.current;
-      if (!rowElement) return;
-
       draggingRef.current = true;
       hoverPausedRef.current = true;
       ignoreHoverUntilLeaveRef.current = false;
       suppressClickRef.current = true;
       lastTimestampRef.current = null;
       setIsDragging(true);
-      rowElement.setPointerCapture(event.pointerId);
     }
 
     offsetRef.current = normalizeOffset(
@@ -204,15 +218,14 @@ function MarqueeRow({
     lastTimestampRef.current = null;
     setIsDragging(false);
 
-    if (rowRef.current != null && pointerId != null && rowRef.current.hasPointerCapture(pointerId)) {
-      rowRef.current.releasePointerCapture(pointerId);
-    }
+    releasePointerCapture(pointerId);
   };
 
   const handlePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!draggingRef.current) {
       pointerDownRef.current = false;
       activePointerIdRef.current = null;
+      releasePointerCapture(event.pointerId);
       return;
     }
     finishDragging(event.pointerId);
@@ -222,6 +235,7 @@ function MarqueeRow({
     if (!draggingRef.current) {
       pointerDownRef.current = false;
       activePointerIdRef.current = null;
+      releasePointerCapture(event.pointerId);
       return;
     }
     finishDragging(event.pointerId);
@@ -232,10 +246,15 @@ function MarqueeRow({
   };
 
   const handlePointerLeave = () => {
+    if (pointerDownRef.current) return;
     pointerDownRef.current = false;
     activePointerIdRef.current = null;
     hoverPausedRef.current = false;
     ignoreHoverUntilLeaveRef.current = false;
+  };
+
+  const handleDragStartCapture = (event: ReactDragEvent<HTMLDivElement>) => {
+    event.preventDefault();
   };
 
   const handleClickCapture = (event: MouseEvent<HTMLDivElement>) => {
@@ -257,6 +276,7 @@ function MarqueeRow({
       onPointerCancel={handlePointerCancel}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
+      onDragStartCapture={handleDragStartCapture}
       onClickCapture={handleClickCapture}
     >
       <div
@@ -271,22 +291,27 @@ function MarqueeRow({
             className="amo-marquee-segment"
           >
             {row.map((character) => (
-                    <Link
-                      key={`${copyIndex}-${character.id}`}
-                      href={`/chat?character_id=${character.id}`}
-                      className="amo-role-card group"
-                    >
-                      <div className="amo-role-sigil">
-                        {character.portraitSrc ? (
-                          <img
-                            src={character.portraitSrc}
-                            alt={character.name}
-                            className="amo-role-sigil-image"
-                          />
-                        ) : (
-                          <span>{sigilForName(character.name)}</span>
-                        )}
-                      </div>
+              <Link
+                key={`${copyIndex}-${character.id}`}
+                href={`/chat?character_id=${character.id}`}
+                draggable={false}
+                className="amo-role-card group"
+                onClick={() => {
+                  onCharacterClick?.(character);
+                }}
+              >
+                <div className="amo-role-sigil">
+                  {character.portraitSrc ? (
+                    <img
+                      src={character.portraitSrc}
+                      alt={character.name}
+                      className="amo-role-sigil-image"
+                      draggable={false}
+                    />
+                  ) : (
+                    <span>{sigilForName(character.name)}</span>
+                  )}
+                </div>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold tracking-[0.06em] text-white/92 md:text-[15px]">
                     {character.name}
@@ -310,7 +335,7 @@ function MarqueeRow({
   );
 }
 
-export default function FeaturedCharacterMarquee({ characters }: FeaturedCharacterMarqueeProps) {
+export default function FeaturedCharacterMarquee({ characters, onCharacterClick }: FeaturedCharacterMarqueeProps) {
   const rows = splitIntoRows(characters, 4).filter((row) => row.length > 0);
 
   return (
@@ -326,6 +351,7 @@ export default function FeaturedCharacterMarquee({ characters }: FeaturedCharact
             row={row}
             direction={ROW_DIRECTIONS[index] ?? "left"}
             duration={(ROW_DURATIONS[index] ?? 36) * MARQUEE_SLOWDOWN_FACTOR}
+            onCharacterClick={onCharacterClick}
           />
         ))}
       </div>

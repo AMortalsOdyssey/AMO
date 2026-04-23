@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import bottleIcon from "@/app/green-bottle-icon.png";
 import { apiFetch, type GraphData, type GraphEdge, type GraphNode, type Stats } from "@/lib/api";
+import { captureEvent } from "@/lib/analytics";
 
 type ThreeModule = typeof import("three");
 
@@ -378,6 +379,8 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const graphRef = useRef<ForceGraph3DInstance<Graph3DNode, Graph3DLink> | null>(null);
   const shouldPlayIntroRef = useRef(false);
+  const hasTrackedViewRef = useRef(false);
+  const lastReportedChapterFilterRef = useRef<string | null>(null);
 
   const centerId = typeof initialSearchParams.center_id === "string" ? initialSearchParams.center_id : null;
   const initialCenterId = typeof centerId === "string" && centerId.length > 0 ? centerId : null;
@@ -500,6 +503,34 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
     }
     setSelectedNodeId(null);
   }, [initialCenterId, preparedGraph, selectedNodeId]);
+
+  useEffect(() => {
+    if (!preparedGraph || hasTrackedViewRef.current) return;
+    hasTrackedViewRef.current = true;
+    captureEvent("graph_v3_viewed", {
+      node_count: preparedGraph.nodes.length,
+      link_count: preparedGraph.links.length,
+      initial_center_id: initialCenterId,
+      chapter_filter: deferredChapterInput.trim() || null,
+      exclude_protagonist: excludeProtagonist,
+    });
+  }, [deferredChapterInput, excludeProtagonist, initialCenterId, preparedGraph]);
+
+  useEffect(() => {
+    if (!preparedGraph) return;
+    const currentValue = deferredChapterInput.trim() || null;
+    if (lastReportedChapterFilterRef.current === null) {
+      lastReportedChapterFilterRef.current = currentValue;
+      return;
+    }
+    if (lastReportedChapterFilterRef.current === currentValue) return;
+    lastReportedChapterFilterRef.current = currentValue;
+    captureEvent("graph_v3_chapter_filter_changed", {
+      chapter_filter: currentValue,
+      node_count: preparedGraph.nodes.length,
+      link_count: preparedGraph.links.length,
+    });
+  }, [deferredChapterInput, preparedGraph]);
 
   const searchResults = useMemo(() => {
     if (!preparedGraph || !searchText.trim()) return [];
@@ -735,9 +766,23 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
         .linkOpacity(playIntro ? 0 : GRAPH_LINK_OPACITY)
         .linkColor((link) => link.color)
         .onNodeClick((node) => {
+          captureEvent("graph_v3_node_selected", {
+            node_id: node.id,
+            node_label: node.label,
+            node_type: node.type,
+            degree: node.degree,
+            source: "canvas_click",
+          });
           window.setTimeout(() => setSelectedNodeId(node.id), 0);
         })
         .onNodeDragEnd((node) => {
+          captureEvent("graph_v3_node_selected", {
+            node_id: node.id,
+            node_label: node.label,
+            node_type: node.type,
+            degree: node.degree,
+            source: "drag_end",
+          });
           window.setTimeout(() => setSelectedNodeId(node.id), 0);
           graph.d3ReheatSimulation();
           graphWithHelpers.resetCountdown?.();
@@ -819,7 +864,13 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
               <input
                 type="checkbox"
                 checked={excludeProtagonist}
-                onChange={(event) => setExcludeProtagonist(event.target.checked)}
+                onChange={(event) => {
+                  const checked = event.target.checked;
+                  setExcludeProtagonist(checked);
+                  captureEvent("graph_v3_exclude_protagonist_toggled", {
+                    exclude_protagonist: checked,
+                  });
+                }}
                 className="accent-emerald-300"
               />
               排除韩立
@@ -888,6 +939,11 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
             {initialCenterId && (
               <Link
                 href={`/graph-v3${clearLegacyQuery}`}
+                onClick={() => {
+                  captureEvent("graph_v3_center_cleared", {
+                    center_id: initialCenterId,
+                  });
+                }}
                 className="rounded-full border border-white/8 bg-white/4 px-3 py-1.5 text-white/82 transition-colors hover:border-emerald-200/18"
               >
                 清除角色聚焦
@@ -916,7 +972,10 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => graphRef.current?.zoomToFit(700, 60)}
+              onClick={() => {
+                graphRef.current?.zoomToFit(700, 60);
+                captureEvent("graph_v3_camera_reset", {});
+              }}
               className="amo-button-secondary rounded-2xl px-4 py-2 text-sm transition-colors"
             >
               重置视角
@@ -940,6 +999,11 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
                   setSelectedNodeId(node.id);
                   setSearchText(node.label);
                   window.requestAnimationFrame(() => focusCameraOnNode(node.id));
+                  captureEvent("graph_v3_search_result_selected", {
+                    node_id: node.id,
+                    node_label: node.label,
+                    node_type: node.type,
+                  });
                 }}
                 className="rounded-full border border-white/8 bg-white/4 px-3 py-1 text-xs text-white/82 transition-colors hover:border-emerald-200/18 hover:text-white"
               >
@@ -1032,6 +1096,12 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
                   {selectedNode.type === "Character" && (
                     <Link
                       href={`/character/${selectedNode.id}`}
+                      onClick={() => {
+                        captureEvent("graph_v3_character_detail_clicked", {
+                          node_id: selectedNode.id,
+                          node_label: selectedNode.label,
+                        });
+                      }}
                       className="amo-button-primary rounded-2xl px-3 py-2 text-sm transition-colors"
                     >
                       查看角色详情
@@ -1057,7 +1127,17 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
                       <button
                         key={link.id}
                         type="button"
-                        onClick={() => targetNode && setSelectedNodeId(targetNode.id)}
+                        onClick={() => {
+                          if (!targetNode) return;
+                          setSelectedNodeId(targetNode.id);
+                          captureEvent("graph_v3_relation_clicked", {
+                            source_node_id: selectedNode.id,
+                            source_node_label: selectedNode.label,
+                            target_node_id: targetNode.id,
+                            target_node_label: targetNode.label,
+                            relation_name: link.name,
+                          });
+                        }}
                         className="w-full rounded-2xl border border-white/8 bg-white/4 p-3 text-left transition-colors hover:border-emerald-200/18 hover:bg-white/6"
                       >
                         <div className="flex items-start justify-between gap-3">

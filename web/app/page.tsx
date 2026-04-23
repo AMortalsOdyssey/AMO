@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { apiFetch, type CharacterBrief, type Stats, type SearchResult } from "@/lib/api";
+import { captureEvent } from "@/lib/analytics";
 import FeaturedCharacterMarquee from "@/components/featured-character-marquee";
 import { getCharacterPortraitSrc } from "@/lib/characterPortraits";
 import { pickFeaturedCharacters } from "@/lib/featuredCharacters";
@@ -68,6 +69,8 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [searching, setSearching] = useState(false);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const hasTrackedSearchFocusRef = useRef(false);
+  const pendingSearchFocusSourceRef = useRef<"input" | "focus_button" | null>(null);
 
   useEffect(() => {
     apiFetch<Stats>("/stats").then(setStats);
@@ -86,6 +89,11 @@ export default function Home() {
       setSearching(true);
       const data = await apiFetch<{ results: SearchResult[] }>(`/search?q=${encodeURIComponent(search)}&limit=10`);
       setSearchResults(data.results);
+      if (data.results.length === 0) {
+        captureEvent("homepage_search_empty_result", {
+          query: search.trim(),
+        });
+      }
       setSearching(false);
     }, 300);
     return () => clearTimeout(t);
@@ -156,12 +164,22 @@ export default function Home() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onFocus={() => {
+              if (hasTrackedSearchFocusRef.current) return;
+              const source = pendingSearchFocusSourceRef.current ?? "input";
+              pendingSearchFocusSourceRef.current = null;
+              hasTrackedSearchFocusRef.current = true;
+              captureEvent("homepage_search_focused", { source });
+            }}
             placeholder="搜索角色、势力、法宝、功法..."
             className="amo-input w-full rounded-full px-7 py-5 pr-24 text-base md:px-8 md:py-6 md:pr-28 md:text-[1.08rem]"
           />
           <button
             type="button"
-            onClick={() => searchInputRef.current?.focus()}
+            onClick={() => {
+              pendingSearchFocusSourceRef.current = "focus_button";
+              searchInputRef.current?.focus();
+            }}
             aria-label="聚焦搜索"
             className="amo-search-action"
           >
@@ -174,6 +192,14 @@ export default function Home() {
               <Link
                 key={`${r.type}-${r.id}`}
                 href={r.type === "character" ? `/character/${r.id}` : "#"}
+                onClick={() => {
+                  captureEvent("homepage_search_result_clicked", {
+                    query: search.trim(),
+                    result_type: r.type,
+                    result_id: r.id,
+                    result_name: r.name,
+                  });
+                }}
                 className="amo-list-item block border-b border-white/6 px-4 py-3 last:border-0"
               >
                 <span className="mr-2 rounded-full border border-white/8 bg-white/4 px-2 py-0.5 text-xs text-white/64">
@@ -208,19 +234,35 @@ export default function Home() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-        <Link href="/graph-v3" className="amo-panel amo-panel-interactive block rounded-3xl p-6">
+        <Link
+          href="/graph-v3"
+          onClick={() => captureEvent("homepage_quick_action_clicked", { target: "graph_v3", href: "/graph-v3" })}
+          className="amo-panel amo-panel-interactive block rounded-3xl p-6"
+        >
           <div className="mb-2 text-xl font-semibold text-white/90">3D 关系图谱</div>
           <div className="text-sm text-white/46">进入新的 3D 力导图视图，探索角色与实体关系网络</div>
         </Link>
-        <Link href="/chat" className="amo-panel amo-panel-interactive block rounded-3xl p-6">
+        <Link
+          href="/chat"
+          onClick={() => captureEvent("homepage_quick_action_clicked", { target: "chat", href: "/chat" })}
+          className="amo-panel amo-panel-interactive block rounded-3xl p-6"
+        >
           <div className="mb-2 text-xl font-semibold text-white/90">角色对话</div>
           <div className="text-sm text-white/46">选择角色和时间点，沉浸式对话体验</div>
         </Link>
-        <Link href="/storyplay" className="amo-panel amo-panel-interactive block rounded-3xl p-6">
+        <Link
+          href="/storyplay"
+          onClick={() => captureEvent("homepage_quick_action_clicked", { target: "storyplay", href: "/storyplay" })}
+          className="amo-panel amo-panel-interactive block rounded-3xl p-6"
+        >
           <div className="mb-2 text-xl font-semibold text-white/90">剧情演绎</div>
           <div className="text-sm text-white/46">在原著锚点之间选择角色与时间窗口，展开平行故事</div>
         </Link>
-        <Link href="/timeline" className="amo-panel amo-panel-interactive block rounded-3xl p-6">
+        <Link
+          href="/timeline"
+          onClick={() => captureEvent("homepage_quick_action_clicked", { target: "timeline", href: "/timeline" })}
+          className="amo-panel amo-panel-interactive block rounded-3xl p-6"
+        >
           <div className="mb-2 text-xl font-semibold text-white/90">时间线</div>
           <div className="text-sm text-white/46">纵览全局事件，追踪角色成长历程</div>
         </Link>
@@ -241,6 +283,13 @@ export default function Home() {
             portraitSrc: getCharacterPortraitSrc(character),
           };
         })}
+        onCharacterClick={(character) => {
+          captureEvent("featured_character_clicked", {
+            character_id: character.id,
+            character_name: character.name,
+            source: "homepage_marquee",
+          });
+        }}
       />
     </div>
   );

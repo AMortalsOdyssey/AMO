@@ -1,0 +1,107 @@
+displayName: AMO Prod - Traffic and Runtime
+gridLayout:
+  columns: 2
+  widgets:
+    - title: AMO Load Balancer Request Rate
+      xyChart:
+        dataSets:
+          - legendTemplate: requests
+            plotType: LINE
+            minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="loadbalancing.googleapis.com/https/request_count" resource.type="https_lb_rule"
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_RATE
+                  crossSeriesReducer: REDUCE_SUM
+        timeshiftDuration: 0s
+        yAxis:
+          label: req/s
+          scale: LINEAR
+    - title: AMO Load Balancer Requests by Response Class
+      xyChart:
+        dataSets:
+          - plotType: STACKED_BAR
+            minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="loadbalancing.googleapis.com/https/request_count" resource.type="https_lb_rule"
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_RATE
+                  crossSeriesReducer: REDUCE_SUM
+                  groupByFields:
+                    - metric.label.response_code_class
+        timeshiftDuration: 0s
+        yAxis:
+          label: req/s
+          scale: LINEAR
+    - title: amo-web CPU Usage
+      xyChart:
+        dataSets:
+          - legendTemplate: amo-web
+            plotType: LINE
+            minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="kubernetes.io/container/cpu/core_usage_time" resource.type="k8s_container" resource.label.namespace_name="amo" resource.label.container_name="amo-web"
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_RATE
+                  crossSeriesReducer: REDUCE_SUM
+        timeshiftDuration: 0s
+        yAxis:
+          label: cores
+          scale: LINEAR
+    - title: amo-web Memory Usage
+      xyChart:
+        dataSets:
+          - legendTemplate: amo-web
+            plotType: LINE
+            minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="kubernetes.io/container/memory/used_bytes" resource.type="k8s_container" resource.label.namespace_name="amo" resource.label.container_name="amo-web"
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_MEAN
+                  crossSeriesReducer: REDUCE_SUM
+        timeshiftDuration: 0s
+        yAxis:
+          label: bytes
+          scale: LINEAR
+    - title: amo-server CPU Usage
+      xyChart:
+        dataSets:
+          - legendTemplate: amo-server
+            plotType: LINE
+            minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="kubernetes.io/container/cpu/core_usage_time" resource.type="k8s_container" resource.label.namespace_name="amo" resource.label.container_name="amo-server"
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_RATE
+                  crossSeriesReducer: REDUCE_SUM
+        timeshiftDuration: 0s
+        yAxis:
+          label: cores
+          scale: LINEAR
+    - title: amo-server Memory Usage
+      xyChart:
+        dataSets:
+          - legendTemplate: amo-server
+            plotType: LINE
+            minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="kubernetes.io/container/memory/used_bytes" resource.type="k8s_container" resource.label.namespace_name="amo" resource.label.container_name="amo-server"
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_MEAN
+                  crossSeriesReducer: REDUCE_SUM
+        timeshiftDuration: 0s
+        yAxis:
+          label: bytes
+          scale: LINEAR

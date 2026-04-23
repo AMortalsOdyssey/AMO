@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch, type CharacterBrief } from "@/lib/api";
+import { captureEvent } from "@/lib/analytics";
 import { getFeaturedCharacterIds } from "@/lib/featuredCharacters";
 import { CharacterPicker } from "@/components/CharacterPicker";
 
@@ -102,9 +103,16 @@ export default function StoryplayEntryPage() {
   }, []);
 
   // 选角色时重置窗口选择
-  const handleCharSelect = (charId: number | null) => {
+  const handleCharSelect = (charId: number | null, source: "picker" | "fallback_search" = "picker") => {
     setSelectedChar(charId);
     setSelectedWindow(null);
+    if (charId === null) return;
+    const character = characters.find((item) => item.id === charId) || fallbackResults.find((item) => item.id === charId);
+    captureEvent("storyplay_character_selected", {
+      character_id: charId,
+      character_name: character?.name ?? null,
+      source,
+    });
   };
 
   const handleFallbackSearch = async () => {
@@ -126,6 +134,10 @@ export default function StoryplayEntryPage() {
       });
       const results = await apiFetch<CharacterBrief[]>(`/characters?${params.toString()}`);
       setFallbackResults(results);
+      captureEvent("storyplay_fallback_search", {
+        query,
+        result_count: results.length,
+      });
       if (results.length === 0) {
         setFallbackError("没有搜到匹配角色，可以换角色名或别名再试一次。");
       }
@@ -139,7 +151,13 @@ export default function StoryplayEntryPage() {
 
   const handleFallbackSelect = (character: CharacterBrief) => {
     setCharacters((prev) => mergeCharacters(prev, [character]));
-    handleCharSelect(character.id);
+    captureEvent("storyplay_fallback_character_selected", {
+      character_id: character.id,
+      character_name: character.name,
+      first_chapter: character.first_chapter,
+      query: fallbackQuery.trim(),
+    });
+    handleCharSelect(character.id, "fallback_search");
     setFallbackQuery(character.name);
     setFallbackResults([]);
     setFallbackError("");
@@ -166,6 +184,14 @@ export default function StoryplayEntryPage() {
         throw new Error(`Storyplay start failed: ${resp.status} ${await resp.text()}`);
       }
       const data = await resp.json();
+      captureEvent("storyplay_started", {
+        character_id: selectedChar,
+        character_name: data.character.name,
+        realm_stage: data.character.realm_stage,
+        chapter_context: data.chapter_context,
+        time_window_id: selectedWindow,
+        worldline_id: data.worldline_id,
+      });
       // Encode session info in URL params
       const params = new URLSearchParams({
         character_id: String(selectedChar),
@@ -206,7 +232,7 @@ export default function StoryplayEntryPage() {
               characters={characters}
               featuredCharacterIds={featuredCharacterIds}
               selected={selectedChar}
-              onSelect={(id) => handleCharSelect(id)}
+              onSelect={(id) => handleCharSelect(id, "picker")}
             />
             <div className="mt-2 text-xs text-white/42">
               已加载 {characters.length} 个可演绎角色，支持角色名、别名和拼音首字母搜索。
@@ -312,7 +338,16 @@ export default function StoryplayEntryPage() {
 
               <button
                 type="button"
-                onClick={() => setSelectedWindow(w.id)}
+                onClick={() => {
+                  setSelectedWindow(w.id);
+                  captureEvent("storyplay_time_window_selected", {
+                    time_window_id: w.id,
+                    chapter_start: w.chapter_start,
+                    chapter_end: w.chapter_end,
+                    character_id: selectedChar,
+                    character_name: selectedCharData?.name ?? null,
+                  });
+                }}
                 className={`w-full text-left p-4 rounded-lg border transition-colors ${
                   selectedWindow === w.id
                     ? "border-emerald-300/18 bg-emerald-300/10 text-white"

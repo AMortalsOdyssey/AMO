@@ -2,6 +2,7 @@
 
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
+import { captureEvent } from "@/lib/analytics";
 
 const API_BASE = "/api";
 
@@ -107,6 +108,7 @@ function StoryplayInner() {
   const [canonDivergence, setCanonDivergence] = useState(false);
   const chaptersEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasTrackedViewRef = useRef(false);
 
   const appendChapter = useCallback((chapter: Chapter) => {
     setChapters((prev) => {
@@ -195,12 +197,27 @@ function StoryplayInner() {
   }, [loadWorldline]);
 
   useEffect(() => {
+    if (hasTrackedViewRef.current) return;
+    hasTrackedViewRef.current = true;
+    captureEvent("storyplay_worldline_viewed", {
+      worldline_id: worldlineId,
+      character_id: characterId,
+      character_name: characterName,
+      realm,
+      chapter_context: initChapter,
+      window_start: windowStart,
+      window_end: windowEnd,
+    });
+  }, [characterId, characterName, initChapter, realm, windowEnd, windowStart, worldlineId]);
+
+  useEffect(() => {
     chaptersEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chapters, streamingText]);
 
   // 流式提交行动
   const submitActionStream = useCallback(async (forceSubmit: boolean = false) => {
     if (!input.trim() || submitting) return;
+    const actionDetail = input.trim();
     const previousChapterCount = chapters.length;
     setSubmitting(true);
     setStreaming(true);
@@ -213,6 +230,16 @@ function StoryplayInner() {
     let chapterData: Chapter | null = null;
 
     try {
+      captureEvent("storyplay_action_submitted", {
+        worldline_id: worldlineId,
+        character_id: characterId,
+        character_name: characterName,
+        action_type: actionType,
+        action_detail_length: actionDetail.length,
+        chapter_context: chapterContext,
+        force_submit: forceSubmit,
+      });
+
       const response = await fetch(`${API_BASE}/storyplay/action/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -220,7 +247,7 @@ function StoryplayInner() {
           worldline_id: worldlineId,
           character_id: characterId,
           action_type: actionType,
-          action_detail: input.trim(),
+          action_detail: actionDetail,
           chapter_context: chapterContext,
           force: forceSubmit,
         }),
@@ -237,9 +264,18 @@ function StoryplayInner() {
       let buffer = "";
       const handleEvent = (data: Record<string, unknown>) => {
         if (data.type === "lore_check") {
-          setLastCheck(data.data as LoreCheck);
+          const loreCheck = data.data as LoreCheck;
+          setLastCheck(loreCheck);
+          captureEvent("storyplay_lore_check_received", {
+            worldline_id: worldlineId,
+            character_id: characterId,
+            action_type: actionType,
+            verdict: loreCheck.verdict,
+            anchor_conflict: Boolean(loreCheck.anchor_conflict),
+            has_alternative: Boolean(loreCheck.alternative),
+          });
           // 如果建议替代方案且不是强制提交，停止流式
-          if ((data.data as LoreCheck).verdict === "suggest_alternative" && !forceSubmit) {
+          if (loreCheck.verdict === "suggest_alternative" && !forceSubmit) {
             setStreaming(false);
             setSubmitting(false);
             setTimeout(() => inputRef.current?.focus(), 0);
@@ -265,6 +301,15 @@ function StoryplayInner() {
           if (payload.canon_divergence) {
             setCanonDivergence(true);
           }
+          captureEvent("storyplay_chapter_generated", {
+            worldline_id: worldlineId,
+            character_id: characterId,
+            action_type: actionType,
+            chapter_order: chapterData.chapter_order,
+            canon_chapter: chapterData.canon_chapter,
+            content_length: chapterData.content.length,
+            canon_divergence: Boolean(chapterData.canon_divergence),
+          });
           appendChapter(chapterData);
         } else if (data.type === "error") {
           console.error("Stream error:", data.message);
@@ -307,6 +352,14 @@ function StoryplayInner() {
       if (!(narrativeContent && !chapterData)) {
         console.error("Stream action failed:", e);
       }
+      captureEvent("storyplay_action_failed", {
+        worldline_id: worldlineId,
+        character_id: characterId,
+        character_name: characterName,
+        action_type: actionType,
+        force_submit: forceSubmit,
+        error_message: e instanceof Error ? e.message : "unknown_error",
+      });
       if (narrativeContent) {
         if (chapterData) {
           appendChapter(chapterData);
@@ -342,16 +395,28 @@ function StoryplayInner() {
     setStreaming(false);
     setSubmitting(false);
     setTimeout(() => inputRef.current?.focus(), 0);
-  }, [input, submitting, worldlineId, characterId, actionType, chapterContext, chapters.length, appendChapter, waitForPersistedChapter, revealRecoveredChapter, applyWorldlineData]);
+  }, [actionType, applyWorldlineData, appendChapter, chapterContext, chapters.length, characterId, characterName, input, submitting, waitForPersistedChapter, worldlineId, revealRecoveredChapter]);
 
   // 强制继续（忽略锚点冲突）
   const forceSubmit = () => {
+    captureEvent("storyplay_force_continue_clicked", {
+      worldline_id: worldlineId,
+      character_id: characterId,
+      character_name: characterName,
+      action_type: actionType,
+    });
     submitActionStream(true);
   };
 
   // 采纳建议
   const acceptSuggestion = () => {
     if (lastCheck?.alternative) {
+      captureEvent("storyplay_suggestion_accepted", {
+        worldline_id: worldlineId,
+        character_id: characterId,
+        character_name: characterName,
+        action_type: actionType,
+      });
       setInput(lastCheck.alternative);
       setLastCheck(null);
       inputRef.current?.focus();
@@ -516,7 +581,15 @@ function StoryplayInner() {
             {ACTION_TYPES.map((a) => (
               <button
                 key={a.type}
-                onClick={() => setActionType(a.type)}
+                onClick={() => {
+                  setActionType(a.type);
+                  captureEvent("storyplay_action_type_selected", {
+                    worldline_id: worldlineId,
+                    character_id: characterId,
+                    character_name: characterName,
+                    action_type: a.type,
+                  });
+                }}
                 className={`text-xs px-3 py-1.5 rounded transition-colors ${
                   actionType === a.type
                     ? "border border-emerald-300/18 bg-emerald-300/10 text-white"

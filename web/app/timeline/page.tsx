@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { apiFetch, type TimelineEvent } from "@/lib/api";
+import { captureEvent } from "@/lib/analytics";
 
 const TYPE_COLORS: Record<string, string> = {
   faction_event: "#62e0a1",
@@ -35,6 +36,7 @@ export default function TimelinePage() {
   const [jumpInput, setJumpInput] = useState("");
   const pageSize = 50;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  const hasTrackedViewRef = useRef(false);
 
   // Load first page to discover available types
   useEffect(() => {
@@ -54,13 +56,41 @@ export default function TimelinePage() {
   }, [filter]);
 
   useEffect(() => {
-    setLoading(true);
     const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
     if (filter) params.set("event_type", filter);
     apiFetch<TimelineEvent[]>(`/timeline?${params}`)
       .then(setEvents)
       .finally(() => setLoading(false));
   }, [page, filter]);
+
+  useEffect(() => {
+    if (loading || hasTrackedViewRef.current) return;
+    hasTrackedViewRef.current = true;
+    captureEvent("timeline_viewed", {
+      total_count: totalCount,
+      available_type_count: availableTypes.length,
+    });
+  }, [availableTypes.length, loading, totalCount]);
+
+  const handleFilterChange = (nextFilter: string) => {
+    setLoading(true);
+    setFilter(nextFilter);
+    setPage(1);
+    captureEvent("timeline_filter_changed", {
+      event_type: nextFilter || "all",
+    });
+  };
+
+  const handlePageChange = (nextPage: number, trigger: "first" | "prev" | "next" | "last" | "jump") => {
+    setLoading(true);
+    setPage(nextPage);
+    captureEvent("timeline_page_changed", {
+      trigger,
+      from_page: page,
+      to_page: nextPage,
+      event_type: filter || "all",
+    });
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -69,7 +99,7 @@ export default function TimelinePage() {
       {/* Filters */}
       <div className="flex gap-2 mb-6 flex-wrap">
         <button
-          onClick={() => { setFilter(""); setPage(1); }}
+          onClick={() => handleFilterChange("")}
           className={`text-xs px-3 py-1.5 rounded transition-colors ${
             !filter ? "border border-emerald-300/18 bg-emerald-300/10 text-white" : "border border-white/8 bg-white/3 text-white/42 hover:text-white/86"
           }`}
@@ -82,7 +112,7 @@ export default function TimelinePage() {
           return (
             <button
               key={t}
-              onClick={() => { setFilter(t); setPage(1); }}
+              onClick={() => handleFilterChange(t)}
               className="border text-xs px-3 py-1.5 rounded transition-colors"
               style={
                 filter === t
@@ -159,14 +189,14 @@ export default function TimelinePage() {
       {/* Pagination */}
       <div className="flex items-center justify-center gap-3 mt-8 flex-wrap">
         <button
-          onClick={() => setPage(1)}
+          onClick={() => handlePageChange(1, "first")}
           disabled={page === 1}
           className="amo-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-30"
         >
           首页
         </button>
         <button
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          onClick={() => handlePageChange(Math.max(1, page - 1), "prev")}
           disabled={page === 1}
           className="amo-button-secondary rounded-xl px-4 py-2 text-sm disabled:opacity-30"
         >
@@ -177,14 +207,14 @@ export default function TimelinePage() {
           <span className="ml-2 text-white/32">（共 {totalCount} 条）</span>
         </span>
         <button
-          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          onClick={() => handlePageChange(Math.min(totalPages, page + 1), "next")}
           disabled={page >= totalPages}
           className="amo-button-secondary rounded-xl px-4 py-2 text-sm disabled:opacity-30"
         >
           下一页
         </button>
         <button
-          onClick={() => setPage(totalPages)}
+          onClick={() => handlePageChange(totalPages, "last")}
           disabled={page >= totalPages}
           className="amo-button-secondary rounded-xl px-3 py-2 text-sm disabled:opacity-30"
         >
@@ -200,7 +230,7 @@ export default function TimelinePage() {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 const p = Math.max(1, Math.min(totalPages, Number(jumpInput) || 1));
-                setPage(p);
+                handlePageChange(p, "jump");
                 setJumpInput("");
               }
             }}
@@ -210,7 +240,7 @@ export default function TimelinePage() {
           <button
             onClick={() => {
               const p = Math.max(1, Math.min(totalPages, Number(jumpInput) || 1));
-              setPage(p);
+              handlePageChange(p, "jump");
               setJumpInput("");
             }}
             className="amo-button-secondary rounded-xl px-3 py-1.5 text-sm"

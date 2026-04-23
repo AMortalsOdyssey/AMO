@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { apiFetch, type CharacterBrief, type Snapshot } from "@/lib/api";
+import { captureEvent } from "@/lib/analytics";
 import { getFeaturedCharacterIds } from "@/lib/featuredCharacters";
 import { CharacterPicker } from "@/components/CharacterPicker";
 
@@ -28,6 +29,7 @@ function ChatInner() {
   const [streaming, setStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const hasTrackedDirectEntryRef = useRef(false);
 
   useEffect(() => {
     apiFetch<CharacterBrief[]>("/characters/for-chat?page_size=500").then((data) => {
@@ -39,7 +41,17 @@ function ChatInner() {
   useEffect(() => {
     if (!selectedChar) return;
     const c = characters.find((ch) => ch.id === selectedChar);
-    if (c) setSelectedCharName(c.name);
+    if (c) {
+      setSelectedCharName(c.name);
+      if (!hasTrackedDirectEntryRef.current && initCharId && Number(initCharId) === c.id) {
+        hasTrackedDirectEntryRef.current = true;
+        captureEvent("chat_opened_with_character", {
+          character_id: c.id,
+          character_name: c.name,
+          source: "query_character_id",
+        });
+      }
+    }
 
     apiFetch<{ snapshots: Snapshot[] }>(`/characters/${selectedChar}`)
       .then((d) => {
@@ -52,7 +64,7 @@ function ChatInner() {
         if (finalSnaps.length) setSelectedSnap(finalSnaps[finalSnaps.length - 1]); // default to latest
       });
     setMessages([]);
-  }, [selectedChar, characters]);
+  }, [selectedChar, characters, initCharId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -71,6 +83,14 @@ function ChatInner() {
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: userMsg }]);
     setStreaming(true);
+
+    captureEvent("chat_message_sent", {
+      character_id: selectedChar,
+      character_name: selectedCharName,
+      knowledge_cutoff: selectedSnap?.knowledge_cutoff ?? null,
+      realm_stage: selectedSnap?.realm_stage ?? null,
+      history_length: messages.length,
+    });
 
     // Add placeholder assistant message
     setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
@@ -136,6 +156,10 @@ function ChatInner() {
       }
     } catch (e) {
       console.error("Chat error:", e);
+      captureEvent("chat_message_failed", {
+        character_id: selectedChar,
+        character_name: selectedCharName,
+      });
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last.role === "assistant" && !last.content) {
@@ -151,6 +175,31 @@ function ChatInner() {
     ? selectedSnap.realm_stage === "unknown" ? "未知境界" : selectedSnap.realm_stage
     : null;
 
+  const handleCharacterSelect = (charId: number | null) => {
+    setSelectedChar(charId);
+    if (charId === null) return;
+    const character = characters.find((item) => item.id === charId);
+    captureEvent("chat_character_selected", {
+      character_id: charId,
+      character_name: character?.name ?? null,
+      source: "picker",
+    });
+  };
+
+  const handleSnapshotSelect = (snapshot: Snapshot) => {
+    setSelectedSnap(snapshot);
+    setMessages([]);
+    captureEvent("chat_snapshot_selected", {
+      character_id: selectedChar,
+      character_name: selectedCharName,
+      snapshot_id: snapshot.id,
+      realm_stage: snapshot.realm_stage,
+      knowledge_cutoff: snapshot.knowledge_cutoff,
+      chapter_start: snapshot.chapter_start,
+      chapter_end: snapshot.chapter_end ?? null,
+    });
+  };
+
   return (
     <div className="flex h-[calc(100vh-4rem)]">
       {/* Sidebar */}
@@ -161,7 +210,7 @@ function ChatInner() {
             characters={characters}
             featuredCharacterIds={featuredCharacterIds}
             selected={selectedChar}
-            onSelect={setSelectedChar}
+            onSelect={handleCharacterSelect}
           />
         </div>
 
@@ -173,7 +222,7 @@ function ChatInner() {
               {snapshots.map((s) => (
                 <button
                   key={s.id}
-                  onClick={() => { setSelectedSnap(s); setMessages([]); }}
+                  onClick={() => handleSnapshotSelect(s)}
                   className={`w-full text-left text-xs px-2 py-1.5 rounded transition-colors ${
                     selectedSnap?.id === s.id
                       ? "border border-emerald-300/18 bg-emerald-300/10 text-white"

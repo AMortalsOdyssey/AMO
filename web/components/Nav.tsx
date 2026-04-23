@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { apiFetch, type SiteConfig } from "@/lib/api";
+import { captureEvent } from "@/lib/analytics";
 
 const NAV = [
   { href: "/", label: "首页" },
@@ -51,6 +52,13 @@ export default function Nav() {
             <Link
               key={n.href}
               href={n.href}
+              onClick={() => {
+                captureEvent("nav_link_clicked", {
+                  href: n.href,
+                  label: n.label,
+                  source: "top_nav",
+                });
+              }}
               className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
                 pathname === n.href || (n.href !== "/" && pathname.startsWith(n.href))
                   ? "border-emerald-300/26 bg-emerald-300/18 text-white"
@@ -65,6 +73,11 @@ export default function Nav() {
               href={feedbackUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={() => {
+                captureEvent("feedback_entry_clicked", {
+                  source: "top_nav",
+                });
+              }}
               className="rounded-full border border-transparent px-3 py-1.5 text-sm text-white/56 transition-colors hover:border-white/8 hover:bg-white/4 hover:text-white/90"
             >
               反馈

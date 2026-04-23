@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import AnalyticsBootstrap from "@/components/AnalyticsBootstrap";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -17,6 +19,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={`${geist.variable} h-full antialiased dark`}>
       <body className="min-h-full flex flex-col text-foreground">
+        <Suspense fallback={null}>
+          <AnalyticsBootstrap />
+        </Suspense>
         <Nav />
         <main className="relative flex-1">{children}</main>
         <SiteFooter />

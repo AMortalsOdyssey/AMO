@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { apiFetch, type CharacterDetail } from "@/lib/api";
+import { captureEvent } from "@/lib/analytics";
 
 export default function CharacterPage() {
   const params = useParams();
@@ -35,6 +36,18 @@ export default function CharacterPage() {
     };
   }, [id]);
 
+  useEffect(() => {
+    if (!char) return;
+    captureEvent("character_detail_viewed", {
+      character_id: char.id,
+      character_name: char.name,
+      is_major: char.is_major,
+      first_chapter: char.first_chapter,
+      snapshot_count: char.snapshots.length,
+      relation_count: char.relations.length,
+    });
+  }, [char]);
+
   if (loading) return <div className="p-8 text-white/48">加载中...</div>;
   if (!char) return <div className="p-8 text-rose-300">角色不存在</div>;
 
@@ -62,12 +75,24 @@ export default function CharacterPage() {
         <div className="flex gap-2 mt-4">
           <Link
             href={`/chat?character_id=${char.id}`}
+            onClick={() => {
+              captureEvent("character_detail_chat_clicked", {
+                character_id: char.id,
+                character_name: char.name,
+              });
+            }}
             className="amo-button-primary rounded-xl px-4 py-2 text-sm font-medium transition-colors"
           >
             与{char.name}对话
           </Link>
           <Link
             href={`/graph-v3?center_id=${char.id}`}
+            onClick={() => {
+              captureEvent("character_detail_graph_clicked", {
+                character_id: char.id,
+                character_name: char.name,
+              });
+            }}
             className="amo-button-secondary rounded-xl px-4 py-2 text-sm transition-colors"
           >
             查看关系图谱
@@ -141,6 +166,15 @@ export default function CharacterPage() {
                 <Link
                   key={r.id}
                   href={`/character/${other.id}`}
+                  onClick={() => {
+                    captureEvent("character_relation_clicked", {
+                      character_id: char.id,
+                      character_name: char.name,
+                      target_character_id: other.id,
+                      target_character_name: other.name ?? null,
+                      relation_type: r.relation_type,
+                    });
+                  }}
                   className="amo-panel flex items-center gap-3 rounded-2xl px-4 py-3 transition-colors hover:border-emerald-200/18 hover:bg-white/4"
                 >
                   <span className="text-white/92">{other.name || `#${other.id}`}</span>

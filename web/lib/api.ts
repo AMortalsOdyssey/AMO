@@ -128,4 +128,6 @@ export interface SearchResult {
 
 export interface SiteConfig {
   feedback_form_url: string | null;
+  posthog_public_key?: string | null;
+  posthog_host?: string | null;
 }

@@ -45,6 +45,8 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["*"]
     debug: bool = False
     feedback_form_url: str | None = None
+    posthog_public_key: str | None = None
+    posthog_host: str = "https://us.i.posthog.com"
 
     @field_validator("cors_origins", mode="before")
     @classmethod

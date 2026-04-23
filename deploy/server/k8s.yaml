@@ -27,6 +27,8 @@ data:
   VERTEX_AI_LOCATION: "us-central1"
   CORS_ORIGINS: '["https://amo.8xd.io"]'
   FEEDBACK_FORM_URL: ""
+  POSTHOG_PUBLIC_KEY: ""
+  POSTHOG_HOST: "https://us.i.posthog.com"
 ---
 apiVersion: v1
 kind: ServiceAccount
