@@ -1,0 +1,253 @@
+[
+  {
+    "chapter_start": 700,
+    "chapter_end": 704,
+    "description": "玉矶阁混战·夺苍坤遗宝",
+    "key_events": [
+      "韩立突袭引发混战",
+      "韩立开启玉盒得指环"
+    ]
+  },
+  {
+    "chapter_start": 705,
+    "chapter_end": 709,
+    "description": "丰原国遇旧·定救婉计划",
+    "key_events": [
+      "韩立救下聂盈等人",
+      "韩立制定三步救婉计划"
+    ]
+  },
+  {
+    "chapter_start": 710,
+    "chapter_end": 718,
+    "description": "潜入掩月宗·强救南宫婉",
+    "key_events": [
+      "韩立化形混入掩月宗",
+      "韩立南宫婉联手退敌"
+    ]
+  },
+  {
+    "chapter_start": 720,
+    "chapter_end": 726,
+    "description": "阗天城议事·谋探坠魔谷",
+    "key_events": [
+      "九国盟重启议事大殿",
+      "南陇侯邀探坠魔谷"
+    ]
+  },
+  {
+    "chapter_start": 727,
+    "chapter_end": 736,
+    "description": "驻守黄龙山·除奸细谷双蒲",
+    "key_events": [
+      "韩立重逢慕容兄弟",
+      "韩立揭穿并灭杀谷双蒲"
+    ]
+  },
+  {
+    "chapter_start": 737,
+    "chapter_end": 745,
+    "description": "慕兰大举入侵·力战仲神师",
+    "key_events": [
+      "慕兰大军全面攻阵",
+      "韩立连遁摆脱仲神师"
+    ]
+  },
+  {
+    "chapter_start": 747,
+    "chapter_end": 749,
+    "description": "伤愈返天一城·索材赴约",
+    "key_events": [
+      "韩立与婉儿定双修",
+      "韩立索求庚精材料"
+    ]
+  },
+  {
+    "chapter_start": 750,
+    "chapter_end": 761,
+    "description": "天一城·备战赌约炼制符宝",
+    "key_events": [
+      "韩立答应探坠魔谷",
+      "韩立闭关炼制雷珠与降灵符"
+    ]
+  },
+  {
+    "chapter_start": 762,
+    "chapter_end": 781,
+    "description": "天南边界·正魔大战夺元明灯",
+    "key_events": [
+      "双方开启生死赌战",
+      "韩立破阵夺取元明灯"
+    ]
+  },
+  {
+    "chapter_start": 782,
+    "chapter_end": 789,
+    "description": "天柱山之约·剑阵灭杀阴罗宗",
+    "key_events": [
+      "南宫婉遭偷袭自封",
+      "韩立大庚剑阵斩杀黑袍人"
+    ]
+  },
+  {
+    "chapter_start": 790,
+    "chapter_end": 793,
+    "description": "落云宗·炼化第二元婴启程",
+    "key_events": [
+      "韩立决定赴极西之地",
+      "韩立炼化至木灵婴成第二元婴"
+    ]
+  },
+  {
+    "chapter_start": 794,
+    "chapter_end": 799,
+    "description": "万岭山·集结队伍探秘坠魔谷",
+    "key_events": [
+      "众修逼迫鬼灵门共享入谷法",
+      "韩立结识大衍神君残魂"
+    ]
+  },
+  {
+    "chapter_start": 800,
+    "chapter_end": 804,
+    "description": "万灵山脉·炼傀备战坠魔谷",
+    "key_events": [
+      "韩立闭关炼制结丹傀儡",
+      "鬼灵门公布入谷方案"
+    ]
+  },
+  {
+    "chapter_start": 805,
+    "chapter_end": 811,
+    "description": "初入坠魔谷·联手灭三首乌蛇",
+    "key_events": [
+      "众修传送进入坠魔谷",
+      "三人合力斩杀巨蟒"
+    ]
+  },
+  {
+    "chapter_start": 812,
+    "chapter_end": 821,
+    "description": "内谷探险·诱杀火蟾分宝物",
+    "key_events": [
+      "韩立驱使噬金虫采砂",
+      "三人围杀火蟾兽分宝"
+    ]
+  },
+  {
+    "chapter_start": 822,
+    "chapter_end": 830,
+    "description": "血咒之门开·南陇侯遭夺舍",
+    "key_events": [
+      "破除血咒之门禁制",
+      "古魔夺舍南陇侯肉身"
+    ]
+  },
+  {
+    "chapter_start": 831,
+    "chapter_end": 837,
+    "description": "寻得灵烛果·古魔破封出世",
+    "key_events": [
+      "韩立斩杀古兽取灵果",
+      "古魔冲破封印现真身"
+    ]
+  },
+  {
+    "chapter_start": 838,
+    "chapter_end": 848,
+    "description": "谷中惊变·众修合力战双魔",
+    "key_events": [
+      "韩立服丹出关遇魔变",
+      "韩立布阵联手战古魔"
+    ]
+  },
+  {
+    "chapter_start": 850,
+    "chapter_end": 856,
+    "description": "坠魔谷内·韩立困魔脱险",
+    "key_events": [
+      "韩立布置大庚剑阵困魔",
+      "韩立坠入残缺药园",
+      "韩立决定闭关炼丹"
+    ]
+  },
+  {
+    "chapter_start": 857,
+    "chapter_end": 862,
+    "description": "天南乱局·韩立回归宗门",
+    "key_events": [
+      "古魔肆虐天南被围剿",
+      "韩立重返落云宗",
+      "韩立助慕沛灵结丹"
+    ]
+  },
+  {
+    "chapter_start": 863,
+    "chapter_end": 869,
+    "description": "百巧院聚会·韩立夺魁",
+    "key_events": [
+      "韩立赴百巧院观礼",
+      "至阳上人邀韩立除魔",
+      "韩立击败金老怪"
+    ]
+  },
+  {
+    "chapter_start": 870,
+    "chapter_end": 877,
+    "description": "七灵岛行·修补封印大阵",
+    "key_events": [
+      "韩立抵达七灵岛海域",
+      "韩立下探大漩涡布阵",
+      "韩立寻得魔髓钻"
+    ]
+  },
+  {
+    "chapter_start": 878,
+    "chapter_end": 883,
+    "description": "闭关炼婴·伪装潜入草原",
+    "key_events": [
+      "韩立修成第二元婴",
+      "韩立伪装护送车队",
+      "韩立炼化噬金虫妖尸"
+    ]
+  },
+  {
+    "chapter_start": 884,
+    "chapter_end": 890,
+    "description": "圣殿途中·结识枫岳获密",
+    "key_events": [
+      "车队遭猿鹫袭击",
+      "韩立救醒中毒枫岳",
+      "韩立搜魂得知冯家秘辛"
+    ]
+  },
+  {
+    "chapter_start": 891,
+    "chapter_end": 895,
+    "description": "河畔冲突·灭九仙宫修士",
+    "key_events": [
+      "九仙宫拦截车队",
+      "韩立灭杀仙宫众人",
+      "圣殿召唤圣兽追踪"
+    ]
+  },
+  {
+    "chapter_start": 896,
+    "chapter_end": 899,
+    "description": "草原决战·韩立智斗圣女",
+    "key_events": [
+      "银月化身诱敌分兵",
+      "韩立设伏迎战圣女",
+      "虚天鼎收圣兽脱身"
+    ]
+  },
+  {
+    "chapter_start": 900,
+    "chapter_end": 900,
+    "description": "大晋冰层·韩立苏醒脱困",
+    "key_events": [
+      "冰中韩立被发现",
+      "韩立苏醒至大晋"
+    ]
+  }
+]

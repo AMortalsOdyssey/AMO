@@ -1,0 +1,202 @@
+[
+  {
+    "chapter_start": 201,
+    "chapter_end": 210,
+    "description": "血色禁地·联手杀蛟与脱困",
+    "key_events": [
+      "击杀墨蛟",
+      "南宫婉结缘",
+      "禁地脱困"
+    ]
+  },
+  {
+    "chapter_start": 211,
+    "chapter_end": 220,
+    "description": "黄枫谷内·筑基成功与新府",
+    "key_events": [
+      "拜师李化元",
+      "炼制筑基丹",
+      "开辟新洞府"
+    ]
+  },
+  {
+    "chapter_start": 221,
+    "chapter_end": 232,
+    "description": "天星坊市·竞拍夺宝与反杀",
+    "key_events": [
+      "秘店竞拍",
+      "遭遇傀儡围攻",
+      "灭杀林师兄"
+    ]
+  },
+  {
+    "chapter_start": 233,
+    "chapter_end": 244,
+    "description": "善后交易·获大衍决与闭关",
+    "key_events": [
+      "结交雷万鹤",
+      "获得大衍决",
+      "闭关四年"
+    ]
+  },
+  {
+    "chapter_start": 245,
+    "chapter_end": 250,
+    "description": "燕家堡之行·偶遇墨彩环",
+    "key_events": [
+      "护送董萱儿",
+      "抵达燕翎堡",
+      "重逢墨彩环"
+    ]
+  },
+  {
+    "chapter_start": 251,
+    "chapter_end": 258,
+    "description": "燕翎堡了结尘缘与初遇董萱儿",
+    "key_events": [
+      "韩立赠丹别彩环",
+      "燕家投靠鬼灵门",
+      "韩立救下董萱儿"
+    ]
+  },
+  {
+    "chapter_start": 259,
+    "chapter_end": 271,
+    "description": "血色禁地突围与筑基中期突破",
+    "key_events": [
+      "激战王蝉夺符宝",
+      "血蜘蛛脱困杀人",
+      "韩立突破至中期"
+    ]
+  },
+  {
+    "chapter_start": 272,
+    "chapter_end": 278,
+    "description": "金鼓原对峙与交易古阵线索",
+    "key_events": [
+      "七派六宗大对峙",
+      "偶遇南宫婉仙子",
+      "达成修阵交易"
+    ]
+  },
+  {
+    "chapter_start": 279,
+    "chapter_end": 292,
+    "description": "潜入越京秦府与馨王府试探",
+    "key_events": [
+      "韩立入驻秦府",
+      "馨王府仙师收徒",
+      "交易无名道书"
+    ]
+  },
+  {
+    "chapter_start": 293,
+    "chapter_end": 300,
+    "description": "调查黑煞教与生擒蒙山五友",
+    "key_events": [
+      "潜入王府查真相",
+      "生擒蒙山五友",
+      "识破血咒秘密"
+    ]
+  },
+  {
+    "chapter_start": 301,
+    "chapter_end": 313,
+    "description": "秦宅布局·解救蒙山五友",
+    "key_events": [
+      "收服蒙山五友",
+      "制定夜袭计划",
+      "晋升筑基中期"
+    ]
+  },
+  {
+    "chapter_start": 314,
+    "chapter_end": 329,
+    "description": "夜闯皇宫·激战黑煞教主",
+    "key_events": [
+      "潜入皇宫布阵",
+      "众修合力战冰妖",
+      "韩立击杀越皇"
+    ]
+  },
+  {
+    "chapter_start": 330,
+    "chapter_end": 344,
+    "description": "嘉元寻仇·夺舍曲魂真相",
+    "key_events": [
+      "探访墨府旧址",
+      "逼供夺舍修士",
+      "斩杀结丹元神"
+    ]
+  },
+  {
+    "chapter_start": 345,
+    "chapter_end": 350,
+    "description": "七派大败·黄枫谷撤离越国",
+    "key_events": [
+      "灵兽山叛变",
+      "执行断后任务",
+      "突围遁走元武"
+    ]
+  },
+  {
+    "chapter_start": 351,
+    "chapter_end": 363,
+    "description": "越国战乱·救错人与逃离天南",
+    "key_events": [
+      "承诺灭付家",
+      "误救南宫屏",
+      "传送离天南"
+    ]
+  },
+  {
+    "chapter_start": 364,
+    "chapter_end": 373,
+    "description": "初入乱星·定居小寰岛重修筑基",
+    "key_events": [
+      "抵达魁星岛",
+      "移居小寰岛",
+      "闭关复筑基"
+    ]
+  },
+  {
+    "chapter_start": 374,
+    "chapter_end": 384,
+    "description": "猎妖夺丹·斩杀古长老逃亡",
+    "key_events": [
+      "六连殿猎妖",
+      "激战婴鲤兽",
+      "斩杀古长老"
+    ]
+  },
+  {
+    "chapter_start": 385,
+    "chapter_end": 392,
+    "description": "海猿结煞·收虫入驻天星城",
+    "key_events": [
+      "曲魂结煞丹",
+      "收服噬金虫",
+      "入驻天星城"
+    ]
+  },
+  {
+    "chapter_start": 393,
+    "chapter_end": 398,
+    "description": "外星海杀妖·六十年闭关结丹",
+    "key_events": [
+      "诱杀千目妖",
+      "散功重修",
+      "成功结金丹"
+    ]
+  },
+  {
+    "chapter_start": 399,
+    "chapter_end": 400,
+    "description": "结丹初成·与妙音门交易遇谋",
+    "key_events": [
+      "交换定颜丹",
+      "炼制猿傀儡",
+      "妙音门设局"
+    ]
+  }
+]

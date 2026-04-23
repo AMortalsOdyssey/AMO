@@ -1,0 +1,125 @@
+2026-04-01 11:46:02,868 [INFO] Using DB anchor: ch800 = 263岁
+2026-04-01 11:46:02,870 [INFO] === Batch Import Started ===
+2026-04-01 11:46:02,870 [INFO] Run ID: 20260401_114602
+2026-04-01 11:46:02,870 [INFO] Chapters: 801 - 850
+2026-04-01 11:46:02,870 [INFO] Dry run: False
+2026-04-01 11:46:02,870 [INFO] Output dir: /Users/tt/code/myproject/AMO/server/../scripts/import/output/batch_501_1000_20260401_114602
+2026-04-01 11:46:02,870 [INFO] Base year anchor: ch800 = 263岁
+2026-04-01 11:46:03,197 [INFO] Neo4j connected
+2026-04-01 11:46:04,266 [INFO] Zilliz connected
+2026-04-01 11:46:04,266 [INFO] === Processing Chapter 801 ===
+2026-04-01 11:47:08,841 [INFO]   Stage 1: 22 entities
+2026-04-01 11:47:15,882 [INFO] ch801: +0.3年 → 263岁
+2026-04-01 11:47:42,425 [INFO] Timeline extraction completed for ch801
+2026-04-01 11:47:59,743 [INFO] Event extraction completed
+2026-04-01 11:48:00,713 [INFO] Relation extraction completed
+2026-04-01 11:48:07,985 [WARNING] Lore rules extraction returned empty for ch 801
+2026-04-01 11:48:07,986 [INFO]   Stage 2: 8 events
+2026-04-01 11:48:07,986 [INFO]   Stage 3: 20 relations
+2026-04-01 11:48:07,986 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:48:07,986 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:48:07,987 [INFO]   Stage 5: 22 canonical entities
+Traceback (most recent call last):
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_async_compat/network/_bolt_socket.py", line 512, in _connect_secure
+    s.connect(resolved_address)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^
+ConnectionRefusedError: [Errno 61] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/io/_bolt_socket.py", line 329, in connect
+    s = cls._connect_secure(
+        resolved_address,
+    ...<3 lines>...
+        ssl_context,
+    )
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_async_compat/network/_bolt_socket.py", line 523, in _connect_secure
+    raise ServiceUnavailable(
+    ...<2 lines>...
+    ) from error
+neo4j.exceptions.ServiceUnavailable: Failed to establish connection to ResolvedIPv6Address(('::1', 7687, 0, 0)) (reason [Errno 61] Connection refused)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/batch_import_501_1000.py", line 740, in <module>
+    main()
+    ~~~~^^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/batch_import_501_1000.py", line 730, in main
+    run_batch_import(
+    ~~~~~~~~~~~~~~~~^
+        start_chapter=args.start,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        skip_zilliz=args.skip_zilliz,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/batch_import_501_1000.py", line 545, in run_batch_import
+    neo4j_writer.write_node(entity.entity_type, pg_id, entity.name, extra)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/run_import.py", line 1612, in write_node
+    session.run(
+    ~~~~~~~~~~~^
+        f"MERGE (n:{label} {{id: $id}}) "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        f"SET n.name = $name, n.worldline = 'canon'" + prop_set,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        id=pg_id, name=name, **props
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/work/session.py", line 305, in run
+    self._connect(self._config.default_access_mode)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/work/session.py", line 126, in _connect
+    super()._connect(
+    ~~~~~~~~~~~~~~~~^
+        access_mode, auth=self._config.auth, **acquire_kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/work/workspace.py", line 181, in _connect
+    self._connection = self._pool.acquire(**acquire_kwargs_)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/io/_pool.py", line 678, in acquire
+    return self._acquire(
+           ~~~~~~~~~~~~~^
+        self.address, auth, deadline, liveness_check_timeout, unprepared
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/io/_pool.py", line 418, in _acquire
+    return connection_creator()
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/io/_pool.py", line 231, in connection_creator
+    connection = self.opener(
+        address, auth or self.pool_config.auth, deadline
+    )
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/io/_pool.py", line 638, in opener
+    return Bolt.open(
+           ~~~~~~~~~^
+        addr,
+        ^^^^^
+    ...<3 lines>...
+        pool_config=pool_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/io/_bolt.py", line 368, in open
+    s, protocol_version = BoltSocket.connect(
+                          ~~~~~~~~~~~~~~~~~~^
+        address,
+        ^^^^^^^^
+    ...<4 lines>...
+        keep_alive=pool_config.keep_alive,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tt/code/myproject/AMO/server/.venv/lib/python3.13/site-packages/neo4j/_sync/io/_bolt_socket.py", line 380, in connect
+    raise ServiceUnavailable(
+    ...<2 lines>...
+    ) from errors[0]
+neo4j.exceptions.ServiceUnavailable: Couldn't connect to localhost:7687 (resolved to ('[::1]:7687', '127.0.0.1:7687')):
+Failed to establish connection to ResolvedIPv6Address(('::1', 7687, 0, 0)) (reason [Errno 61] Connection refused)
+Failed to establish connection to ResolvedIPv4Address(('127.0.0.1', 7687)) (reason [Errno 61] Connection refused)

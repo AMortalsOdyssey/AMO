@@ -1,0 +1,522 @@
+{
+  "mode": "apply",
+  "before": {
+    "active_characters": 836,
+    "active_character_relations": 628,
+    "alias_duplicate_characters": 28
+  },
+  "plan": {
+    "merge_count": 0,
+    "prune_count": 63,
+    "sample_merges": [],
+    "sample_prunes": [
+      {
+        "character_id": 102,
+        "character_name": "七玄门门主",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1137,
+        "character_name": "严道友",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 203,
+        "character_name": "中年胖子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2476,
+        "character_name": "主元婴",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1651,
+        "character_name": "云道友",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2466,
+        "character_name": "令狐道友",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2100,
+        "character_name": "元姓大汉",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1960,
+        "character_name": "元婴",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 957,
+        "character_name": "光头大汉",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 956,
+        "character_name": "光头无眉的精壮大汉",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1072,
+        "character_name": "凶恶的大汉",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1903,
+        "character_name": "卜道友",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 195,
+        "character_name": "吴副门主",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 255,
+        "character_name": "大哥",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 301,
+        "character_name": "大胡子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1276,
+        "character_name": "妍道友",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 964,
+        "character_name": "妖化大汉",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2029,
+        "character_name": "孙道友",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2439,
+        "character_name": "孟姓大汉",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1380,
+        "character_name": "张道友",
+        "reason": "low_value_name_rule"
+      }
+    ],
+    "sample_skipped_aliases": [
+      {
+        "alias_id": 1141,
+        "alias_name": "中年儒生",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 797,
+            "name": "玄夜"
+          },
+          {
+            "id": 500,
+            "name": "王子陵"
+          },
+          {
+            "id": 1797,
+            "name": "韩天啸"
+          },
+          {
+            "id": 1795,
+            "name": "韩瑞"
+          }
+        ]
+      },
+      {
+        "alias_id": 438,
+        "alias_name": "中年道士",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1419,
+            "name": "妙鹤真人"
+          },
+          {
+            "id": 389,
+            "name": "浮云子"
+          },
+          {
+            "id": 1934,
+            "name": "至阳上人"
+          },
+          {
+            "id": 2494,
+            "name": "骅道友"
+          },
+          {
+            "id": 1424,
+            "name": "齐姓道士"
+          }
+        ]
+      },
+      {
+        "alias_id": 215,
+        "alias_name": "儒生",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1912,
+            "name": "仲神师"
+          },
+          {
+            "id": 1407,
+            "name": "古玉"
+          },
+          {
+            "id": 2493,
+            "name": "宁贤侄"
+          },
+          {
+            "id": 500,
+            "name": "王子陵"
+          },
+          {
+            "id": 1797,
+            "name": "韩天啸"
+          },
+          {
+            "id": 1795,
+            "name": "韩瑞"
+          }
+        ]
+      },
+      {
+        "alias_id": 957,
+        "alias_name": "光头大汉",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 964,
+            "name": "妖化大汉"
+          },
+          {
+            "id": 2432,
+            "name": "金花老祖"
+          },
+          {
+            "id": 974,
+            "name": "铁罗"
+          }
+        ]
+      },
+      {
+        "alias_id": 1968,
+        "alias_name": "古魔",
+        "reason": "protected_name"
+      },
+      {
+        "alias_id": 255,
+        "alias_name": "大哥",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 939,
+            "name": "蒙山五友老大"
+          },
+          {
+            "id": 493,
+            "name": "陈大公子"
+          },
+          {
+            "id": 442,
+            "name": "陈氏家族的大公子"
+          },
+          {
+            "id": 94,
+            "name": "韩立大哥"
+          },
+          {
+            "id": 224,
+            "name": "韩铁"
+          }
+        ]
+      },
+      {
+        "alias_id": 875,
+        "alias_name": "夫人",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 239,
+            "name": "刘氏"
+          },
+          {
+            "id": 1175,
+            "name": "范静梅"
+          },
+          {
+            "id": 1078,
+            "name": "蓝夫人"
+          },
+          {
+            "id": 892,
+            "name": "青儿"
+          }
+        ]
+      },
+      {
+        "alias_id": 960,
+        "alias_name": "少主",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1146,
+            "name": "乌丑"
+          },
+          {
+            "id": 806,
+            "name": "王蝉"
+          },
+          {
+            "id": 901,
+            "name": "铭儿"
+          },
+          {
+            "id": 1497,
+            "name": "青阳门少主"
+          }
+        ]
+      },
+      {
+        "alias_id": 168,
+        "alias_name": "巨汉",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 957,
+            "name": "光头大汉"
+          },
+          {
+            "id": 1890,
+            "name": "天哭先生"
+          },
+          {
+            "id": 169,
+            "name": "曲魂"
+          },
+          {
+            "id": 161,
+            "name": "铁奴"
+          }
+        ]
+      },
+      {
+        "alias_id": 736,
+        "alias_name": "师傅",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 486,
+            "name": "李化元"
+          },
+          {
+            "id": 341,
+            "name": "马师伯"
+          }
+        ]
+      },
+      {
+        "alias_id": 112,
+        "alias_name": "张铁",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 168,
+            "name": "巨汉"
+          },
+          {
+            "id": 169,
+            "name": "曲魂"
+          }
+        ]
+      },
+      {
+        "alias_id": 1501,
+        "alias_name": "恶汉",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1421,
+            "name": "宣姓恶汉"
+          },
+          {
+            "id": 424,
+            "name": "钟吾"
+          }
+        ]
+      },
+      {
+        "alias_id": 934,
+        "alias_name": "教主",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 965,
+            "name": "李破云"
+          },
+          {
+            "id": 951,
+            "name": "神秘教主"
+          }
+        ]
+      },
+      {
+        "alias_id": 1393,
+        "alias_name": "易道友",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1397,
+            "name": "易敬"
+          },
+          {
+            "id": 1383,
+            "name": "锦衣大汉"
+          }
+        ]
+      },
+      {
+        "alias_id": 156,
+        "alias_name": "王门主",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 118,
+            "name": "王6"
+          },
+          {
+            "id": 793,
+            "name": "鬼灵门门主"
+          }
+        ]
+      },
+      {
+        "alias_id": 2516,
+        "alias_name": "童子",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 2309,
+            "name": "天澜圣兽"
+          },
+          {
+            "id": 1864,
+            "name": "蓝师伯"
+          }
+        ]
+      },
+      {
+        "alias_id": 1188,
+        "alias_name": "紫灵仙子",
+        "reason": "protected_name"
+      },
+      {
+        "alias_id": 953,
+        "alias_name": "老二",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 942,
+            "name": "瘦高的老二"
+          },
+          {
+            "id": 937,
+            "name": "蒙山五友老二"
+          }
+        ]
+      },
+      {
+        "alias_id": 1719,
+        "alias_name": "老身",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 2364,
+            "name": "黄泉鬼母"
+          },
+          {
+            "id": 2336,
+            "name": "龙夫人"
+          }
+        ]
+      },
+      {
+        "alias_id": 924,
+        "alias_name": "老道",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 893,
+            "name": "吴仙师"
+          },
+          {
+            "id": 1255,
+            "name": "天悟子"
+          },
+          {
+            "id": 1419,
+            "name": "妙鹤真人"
+          },
+          {
+            "id": 2252,
+            "name": "玄青子"
+          },
+          {
+            "id": 1412,
+            "name": "金霞道士"
+          }
+        ]
+      }
+    ]
+  },
+  "applied": {
+    "merged_characters": 0,
+    "pruned_characters": 63,
+    "pruned_relation_types": {},
+    "migrated_rows": {
+      "character_relations": 0,
+      "faction_memberships": 0,
+      "item_ownerships": 0,
+      "character_techniques": 0,
+      "character_snapshots": 0,
+      "character_realm_timeline": 0,
+      "events": 0,
+      "master_timeline": 0
+    }
+  },
+  "after": {
+    "active_characters": 773,
+    "active_character_relations": 587,
+    "alias_duplicate_characters": 20
+  },
+  "neo4j_rebuild": {
+    "nodes": {
+      "Character": 773,
+      "Faction": 345,
+      "Artifact": 1683,
+      "Technique": 787,
+      "SpiritBeast": 368,
+      "Location": 694
+    },
+    "relationships": {
+      "RELATION": 587,
+      "BELONGS_TO": 797,
+      "OWNS": 1888,
+      "BONDED_TO": 166,
+      "MASTERS": 355
+    }
+  }
+}

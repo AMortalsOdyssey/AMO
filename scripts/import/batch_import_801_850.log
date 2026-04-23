@@ -1,0 +1,426 @@
+2026-04-01 10:28:31,101 [INFO] Using DB anchor: ch800 = 263岁
+2026-04-01 10:28:31,103 [INFO] === Batch Import Started ===
+2026-04-01 10:28:31,103 [INFO] Run ID: 20260401_102831
+2026-04-01 10:28:31,103 [INFO] Chapters: 801 - 850
+2026-04-01 10:28:31,103 [INFO] Dry run: False
+2026-04-01 10:28:31,103 [INFO] Output dir: /Users/tt/code/myproject/AMO/server/../scripts/import/output/batch_501_1000_20260401_102831
+2026-04-01 10:28:31,103 [INFO] Base year anchor: ch800 = 263岁
+2026-04-01 10:28:31,402 [INFO] Neo4j connected
+2026-04-01 10:28:32,812 [INFO] Zilliz connected
+2026-04-01 10:28:32,812 [INFO] === Processing Chapter 801 ===
+2026-04-01 10:29:34,686 [INFO]   Stage 1: 22 entities
+2026-04-01 10:29:41,008 [INFO] ch801: +0.3年 → 263岁
+2026-04-01 10:30:02,958 [INFO] Timeline extraction completed for ch801
+2026-04-01 10:30:20,921 [WARNING] Lore rules extraction returned empty for ch 801
+2026-04-01 10:30:36,374 [INFO] Relation extraction completed
+2026-04-01 10:30:41,633 [INFO] Event extraction completed
+2026-04-01 10:30:41,634 [INFO]   Stage 2: 8 events
+2026-04-01 10:30:41,634 [INFO]   Stage 3: 20 relations
+2026-04-01 10:30:41,634 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:30:41,634 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:30:41,634 [INFO]   Stage 5: 22 canonical entities
+2026-04-01 10:31:03,606 [INFO]   Chapter 801 committed (year=263)
+2026-04-01 10:31:03,912 [INFO] === Processing Chapter 802 ===
+2026-04-01 10:32:00,247 [WARNING] ch802: Entity extraction returned empty, skipping
+2026-04-01 10:32:00,250 [INFO]   Stage 1: 0 entities
+2026-04-01 10:32:09,251 [INFO] ch802: +0.0年 → 263岁
+2026-04-01 10:32:21,760 [INFO] Timeline extraction completed for ch802
+2026-04-01 10:32:38,163 [INFO] Event extraction completed
+2026-04-01 10:32:40,591 [WARNING] Lore rules extraction returned empty for ch 802
+2026-04-01 10:32:48,189 [INFO] Relation extraction completed
+2026-04-01 10:32:48,190 [INFO]   Stage 2: 6 events
+2026-04-01 10:32:48,191 [INFO]   Stage 3: 15 relations
+2026-04-01 10:32:48,191 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:32:48,191 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:32:48,191 [INFO]   Stage 5: 22 canonical entities
+2026-04-01 10:32:56,130 [INFO]   Chapter 802 committed (year=263)
+2026-04-01 10:32:56,436 [INFO] === Processing Chapter 803 ===
+2026-04-01 10:34:20,040 [WARNING] ch803: Entity extraction returned empty, skipping
+2026-04-01 10:34:20,041 [INFO]   Stage 1: 0 entities
+2026-04-01 10:34:28,861 [INFO] ch803: +0.0年 → 263岁
+2026-04-01 10:34:39,282 [INFO] Timeline extraction completed for ch803
+2026-04-01 10:35:08,952 [WARNING] Lore rules extraction returned empty for ch 803
+2026-04-01 10:35:20,632 [INFO] Relation extraction completed
+2026-04-01 10:35:21,522 [INFO] Event extraction completed
+2026-04-01 10:35:21,523 [INFO]   Stage 2: 9 events
+2026-04-01 10:35:21,523 [INFO]   Stage 3: 21 relations
+2026-04-01 10:35:21,523 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:35:21,523 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:35:21,523 [INFO]   Stage 5: 22 canonical entities
+2026-04-01 10:35:33,110 [INFO]   Chapter 803 committed (year=263)
+2026-04-01 10:35:33,410 [INFO] === Processing Chapter 804 ===
+2026-04-01 10:36:27,480 [INFO]   Stage 1: 25 entities
+2026-04-01 10:36:34,010 [INFO] ch804: +0.0年 → 263岁
+2026-04-01 10:36:46,900 [INFO] Timeline extraction completed for ch804
+2026-04-01 10:37:07,699 [WARNING] Lore rules extraction returned empty for ch 804
+2026-04-01 10:37:13,319 [INFO] Event extraction completed
+2026-04-01 10:37:38,781 [INFO] Relation extraction completed
+2026-04-01 10:37:38,783 [INFO]   Stage 2: 8 events
+2026-04-01 10:37:38,783 [INFO]   Stage 3: 22 relations
+2026-04-01 10:37:38,783 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:37:38,783 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:37:38,783 [INFO]   Stage 5: 44 canonical entities
+2026-04-01 10:37:59,951 [INFO]   Chapter 804 committed (year=263)
+2026-04-01 10:38:00,256 [INFO] === Processing Chapter 805 ===
+2026-04-01 10:38:54,321 [WARNING] ch805: Entity extraction returned empty, skipping
+2026-04-01 10:38:54,323 [INFO]   Stage 1: 0 entities
+2026-04-01 10:39:09,604 [INFO] ch805: +0.0年 → 263岁
+2026-04-01 10:39:22,984 [INFO] Timeline extraction completed for ch805
+2026-04-01 10:39:35,734 [INFO] Relation extraction completed
+2026-04-01 10:39:41,541 [INFO] Event extraction completed
+2026-04-01 10:39:41,542 [INFO]   Stage 2: 8 events
+2026-04-01 10:39:41,542 [INFO]   Stage 3: 17 relations
+2026-04-01 10:39:41,542 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:39:41,542 [INFO]   Stage 4b: 8 lore rules
+2026-04-01 10:39:41,542 [INFO]   Stage 5: 44 canonical entities
+2026-04-01 10:39:53,766 [INFO]   Chapter 805 committed (year=263)
+2026-04-01 10:39:54,069 [INFO] === Processing Chapter 806 ===
+2026-04-01 10:40:49,336 [WARNING] ch806: Entity extraction returned empty, skipping
+2026-04-01 10:40:49,337 [INFO]   Stage 1: 0 entities
+2026-04-01 10:41:01,496 [INFO] ch806: +0.0年 → 263岁
+2026-04-01 10:41:10,067 [INFO] Timeline extraction completed for ch806
+2026-04-01 10:41:33,297 [WARNING] Lore rules extraction returned empty for ch 806
+2026-04-01 10:41:35,885 [INFO] Relation extraction completed
+2026-04-01 10:41:45,269 [INFO] Event extraction completed
+2026-04-01 10:41:45,270 [INFO]   Stage 2: 7 events
+2026-04-01 10:41:45,270 [INFO]   Stage 3: 12 relations
+2026-04-01 10:41:45,270 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:41:45,270 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:41:45,270 [INFO]   Stage 5: 44 canonical entities
+2026-04-01 10:41:54,719 [INFO]   Chapter 806 committed (year=263)
+2026-04-01 10:41:55,024 [INFO] === Processing Chapter 807 ===
+2026-04-01 10:42:52,191 [WARNING] ch807: Entity extraction returned empty, skipping
+2026-04-01 10:42:52,192 [INFO]   Stage 1: 0 entities
+2026-04-01 10:43:00,852 [INFO] ch807: +0.0年 → 263岁
+2026-04-01 10:43:17,658 [INFO] Timeline extraction completed for ch807
+2026-04-01 10:43:26,560 [INFO] Relation extraction completed
+2026-04-01 10:43:35,575 [WARNING] Lore rules extraction returned empty for ch 807
+2026-04-01 10:44:06,881 [INFO] Event extraction completed
+2026-04-01 10:44:06,882 [INFO]   Stage 2: 11 events
+2026-04-01 10:44:06,882 [INFO]   Stage 3: 16 relations
+2026-04-01 10:44:06,882 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:44:06,882 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:44:06,882 [INFO]   Stage 5: 44 canonical entities
+2026-04-01 10:44:21,078 [INFO]   Chapter 807 committed (year=263)
+2026-04-01 10:44:21,383 [INFO] === Processing Chapter 808 ===
+2026-04-01 10:45:11,425 [INFO]   Stage 1: 18 entities
+2026-04-01 10:45:19,618 [INFO] ch808: +0.0年 → 263岁
+2026-04-01 10:45:29,613 [INFO] Timeline extraction completed for ch808
+2026-04-01 10:45:50,869 [WARNING] Lore rules extraction returned empty for ch 808
+2026-04-01 10:45:56,700 [INFO] Event extraction completed
+2026-04-01 10:46:01,504 [INFO] Relation extraction completed
+2026-04-01 10:46:01,505 [INFO]   Stage 2: 8 events
+2026-04-01 10:46:01,505 [INFO]   Stage 3: 20 relations
+2026-04-01 10:46:01,505 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:46:01,505 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:46:01,505 [INFO]   Stage 5: 56 canonical entities
+2026-04-01 10:46:19,641 [INFO]   Chapter 808 committed (year=263)
+2026-04-01 10:46:19,947 [INFO] === Processing Chapter 809 ===
+2026-04-01 10:47:27,822 [WARNING] ch809: Entity extraction returned empty, skipping
+2026-04-01 10:47:27,823 [INFO]   Stage 1: 0 entities
+2026-04-01 10:47:36,394 [INFO] ch809: +0.0年 → 263岁
+2026-04-01 10:47:42,258 [INFO] Timeline extraction completed for ch809
+2026-04-01 10:47:56,990 [INFO] Relation extraction completed
+2026-04-01 10:48:12,008 [WARNING] Lore rules extraction returned empty for ch 809
+2026-04-01 10:48:25,542 [INFO] Event extraction completed
+2026-04-01 10:48:25,543 [INFO]   Stage 2: 9 events
+2026-04-01 10:48:25,543 [INFO]   Stage 3: 14 relations
+2026-04-01 10:48:25,543 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:48:25,543 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:48:25,543 [INFO]   Stage 5: 56 canonical entities
+2026-04-01 10:48:37,751 [INFO]   Chapter 809 committed (year=263)
+2026-04-01 10:48:38,055 [INFO] === Processing Chapter 810 ===
+2026-04-01 10:49:18,838 [INFO]   Stage 1: 19 entities
+2026-04-01 10:49:44,569 [INFO] ch810: +0.0年 → 263岁
+2026-04-01 10:49:57,747 [INFO] Timeline extraction completed for ch810
+2026-04-01 10:50:01,077 [WARNING] Lore rules extraction returned empty for ch 810
+2026-04-01 10:50:05,168 [INFO] Relation extraction completed
+2026-04-01 10:50:14,174 [INFO] Event extraction completed
+2026-04-01 10:50:14,175 [INFO]   Stage 2: 8 events
+2026-04-01 10:50:14,175 [INFO]   Stage 3: 21 relations
+2026-04-01 10:50:14,175 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:50:14,175 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:50:14,175 [INFO] Entity '碧绿色指环' alias '指环' maps to '两仪环', merging
+2026-04-01 10:50:14,175 [INFO]   Stage 5: 70 canonical entities
+2026-04-01 10:50:34,905 [INFO]   Chapter 810 committed (year=263)
+2026-04-01 10:50:35,211 [INFO] === Processing Chapter 811 ===
+2026-04-01 10:51:23,343 [INFO]   Stage 1: 16 entities
+2026-04-01 10:51:31,317 [INFO] ch811: +0.0年 → 263岁
+2026-04-01 10:51:38,527 [INFO] Timeline extraction completed for ch811
+2026-04-01 10:52:10,517 [INFO] Event extraction completed
+2026-04-01 10:52:14,517 [INFO] Relation extraction completed
+2026-04-01 10:52:15,068 [WARNING] Lore rules extraction returned empty for ch 811
+2026-04-01 10:52:15,069 [INFO]   Stage 2: 6 events
+2026-04-01 10:52:15,069 [INFO]   Stage 3: 16 relations
+2026-04-01 10:52:15,069 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:52:15,069 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:52:15,069 [INFO]   Stage 5: 71 canonical entities
+2026-04-01 10:52:29,446 [INFO]   Chapter 811 committed (year=263)
+2026-04-01 10:52:29,751 [INFO] === Processing Chapter 812 ===
+2026-04-01 10:53:26,984 [INFO]   Stage 1: 21 entities
+2026-04-01 10:53:34,443 [INFO] ch812: +0.0年 → 263岁
+2026-04-01 10:53:51,108 [INFO] Timeline extraction completed for ch812
+2026-04-01 10:54:09,488 [WARNING] Lore rules extraction returned empty for ch 812
+2026-04-01 10:54:25,897 [INFO] Relation extraction completed
+2026-04-01 10:54:43,919 [INFO] Event extraction completed
+2026-04-01 10:54:43,920 [INFO]   Stage 2: 7 events
+2026-04-01 10:54:43,920 [INFO]   Stage 3: 18 relations
+2026-04-01 10:54:43,920 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:54:43,920 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:54:43,920 [INFO] Entity '青竹蜂云剑' alias '飞剑' maps to '金色飞剑', merging
+2026-04-01 10:54:43,920 [INFO]   Stage 5: 81 canonical entities
+2026-04-01 10:55:03,060 [INFO]   Chapter 812 committed (year=263)
+2026-04-01 10:55:03,362 [INFO] === Processing Chapter 813 ===
+2026-04-01 10:55:59,387 [WARNING] ch813: Entity extraction returned empty, skipping
+2026-04-01 10:55:59,388 [INFO]   Stage 1: 0 entities
+2026-04-01 10:56:09,980 [INFO] ch813: +0.0年 → 263岁
+2026-04-01 10:56:25,454 [INFO] Timeline extraction completed for ch813
+2026-04-01 10:56:39,587 [INFO] Relation extraction completed
+2026-04-01 10:56:50,230 [WARNING] Lore rules extraction returned empty for ch 813
+2026-04-01 10:57:07,726 [INFO] Event extraction completed
+2026-04-01 10:57:07,727 [INFO]   Stage 2: 11 events
+2026-04-01 10:57:07,727 [INFO]   Stage 3: 15 relations
+2026-04-01 10:57:07,727 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:57:07,727 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:57:07,727 [INFO]   Stage 5: 81 canonical entities
+2026-04-01 10:57:23,608 [INFO]   Chapter 813 committed (year=263)
+2026-04-01 10:57:23,913 [INFO] === Processing Chapter 814 ===
+2026-04-01 10:58:32,519 [WARNING] ch814: Entity extraction returned empty, skipping
+2026-04-01 10:58:32,522 [INFO]   Stage 1: 0 entities
+2026-04-01 10:58:41,902 [INFO] ch814: +0.0年 → 263岁
+2026-04-01 10:59:05,638 [INFO] Timeline extraction completed for ch814
+2026-04-01 10:59:06,765 [INFO] Relation extraction completed
+2026-04-01 10:59:10,804 [WARNING] Lore rules extraction returned empty for ch 814
+2026-04-01 10:59:15,965 [INFO] Event extraction completed
+2026-04-01 10:59:15,967 [INFO]   Stage 2: 7 events
+2026-04-01 10:59:15,967 [INFO]   Stage 3: 13 relations
+2026-04-01 10:59:15,967 [INFO]   Stage 4: timeline year=263
+2026-04-01 10:59:15,967 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 10:59:15,967 [INFO]   Stage 5: 81 canonical entities
+2026-04-01 10:59:24,943 [INFO]   Chapter 814 committed (year=263)
+2026-04-01 10:59:25,248 [INFO] === Processing Chapter 815 ===
+2026-04-01 11:00:23,298 [WARNING] ch815: Entity extraction returned empty, skipping
+2026-04-01 11:00:23,300 [INFO]   Stage 1: 0 entities
+2026-04-01 11:00:30,930 [INFO] ch815: +0.0年 → 263岁
+2026-04-01 11:00:44,772 [INFO] Timeline extraction completed for ch815
+2026-04-01 11:00:52,537 [INFO] Relation extraction completed
+2026-04-01 11:00:56,130 [INFO] Event extraction completed
+2026-04-01 11:01:06,109 [WARNING] Lore rules extraction returned empty for ch 815
+2026-04-01 11:01:06,110 [INFO]   Stage 2: 4 events
+2026-04-01 11:01:06,110 [INFO]   Stage 3: 12 relations
+2026-04-01 11:01:06,110 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:01:06,110 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:01:06,110 [INFO]   Stage 5: 81 canonical entities
+2026-04-01 11:01:11,968 [INFO]   Chapter 815 committed (year=263)
+2026-04-01 11:01:12,274 [INFO] === Processing Chapter 816 ===
+2026-04-01 11:02:13,294 [INFO]   Stage 1: 20 entities
+2026-04-01 11:02:20,190 [INFO] ch816: +0.0年 → 263岁
+2026-04-01 11:02:31,943 [INFO] Timeline extraction completed for ch816
+2026-04-01 11:02:55,999 [INFO] Event extraction completed
+2026-04-01 11:02:57,855 [WARNING] Lore rules extraction returned empty for ch 816
+2026-04-01 11:03:05,206 [INFO] Relation extraction completed
+2026-04-01 11:03:05,207 [INFO]   Stage 2: 7 events
+2026-04-01 11:03:05,207 [INFO]   Stage 3: 16 relations
+2026-04-01 11:03:05,207 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:03:05,207 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:03:05,207 [INFO] Entity '赤红巨峰' alias '巨峰' maps to '千重峰', merging
+2026-04-01 11:03:05,207 [INFO]   Stage 5: 92 canonical entities
+2026-04-01 11:03:21,974 [INFO]   Chapter 816 committed (year=263)
+2026-04-01 11:03:22,279 [INFO] === Processing Chapter 817 ===
+2026-04-01 11:04:26,540 [WARNING] ch817: Entity extraction returned empty, skipping
+2026-04-01 11:04:26,541 [INFO]   Stage 1: 0 entities
+2026-04-01 11:04:34,053 [INFO] ch817: +0.0年 → 263岁
+2026-04-01 11:04:51,977 [INFO] Timeline extraction completed for ch817
+2026-04-01 11:05:14,003 [WARNING] Lore rules extraction returned empty for ch 817
+2026-04-01 11:05:19,524 [INFO] Relation extraction completed
+2026-04-01 11:05:26,258 [WARNING] Event extraction returned empty, skipping
+2026-04-01 11:05:26,259 [INFO]   Stage 2: 0 events
+2026-04-01 11:05:26,259 [INFO]   Stage 3: 17 relations
+2026-04-01 11:05:26,260 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:05:26,260 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:05:26,260 [INFO]   Stage 5: 92 canonical entities
+2026-04-01 11:05:27,180 [INFO]   Chapter 817 committed (year=263)
+2026-04-01 11:05:27,486 [INFO] === Processing Chapter 818 ===
+2026-04-01 11:06:02,982 [INFO]   Stage 1: 14 entities
+2026-04-01 11:06:11,266 [INFO] ch818: +0.0年 → 263岁
+2026-04-01 11:06:22,774 [INFO] Timeline extraction completed for ch818
+2026-04-01 11:06:40,373 [INFO] Relation extraction completed
+2026-04-01 11:06:54,526 [WARNING] Lore rules extraction returned empty for ch 818
+2026-04-01 11:07:15,909 [INFO] Event extraction completed
+2026-04-01 11:07:15,909 [INFO]   Stage 2: 7 events
+2026-04-01 11:07:15,909 [INFO]   Stage 3: 15 relations
+2026-04-01 11:07:15,909 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:07:15,909 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:07:15,909 [INFO]   Stage 5: 94 canonical entities
+2026-04-01 11:07:34,579 [INFO]   Chapter 818 committed (year=263)
+2026-04-01 11:07:34,882 [INFO] === Processing Chapter 819 ===
+2026-04-01 11:08:29,406 [WARNING] ch819: Entity extraction returned empty, skipping
+2026-04-01 11:08:29,406 [INFO]   Stage 1: 0 entities
+2026-04-01 11:08:36,978 [INFO] ch819: +0.0年 → 263岁
+2026-04-01 11:08:45,282 [INFO] Timeline extraction completed for ch819
+2026-04-01 11:09:09,963 [INFO] Relation extraction completed
+2026-04-01 11:09:26,125 [WARNING] Lore rules extraction returned empty for ch 819
+2026-04-01 11:09:38,621 [INFO] Event extraction completed
+2026-04-01 11:09:38,622 [INFO]   Stage 2: 9 events
+2026-04-01 11:09:38,622 [INFO]   Stage 3: 12 relations
+2026-04-01 11:09:38,622 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:09:38,622 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:09:38,622 [INFO]   Stage 5: 94 canonical entities
+2026-04-01 11:09:50,055 [INFO]   Chapter 819 committed (year=263)
+2026-04-01 11:09:50,360 [INFO] === Processing Chapter 820 ===
+2026-04-01 11:10:34,038 [INFO]   Stage 1: 16 entities
+2026-04-01 11:10:43,178 [INFO] ch820: +0.0年 → 263岁
+2026-04-01 11:10:54,437 [INFO] Timeline extraction completed for ch820
+2026-04-01 11:11:10,854 [INFO] Event extraction completed
+2026-04-01 11:11:11,353 [INFO] Relation extraction completed
+2026-04-01 11:11:20,023 [WARNING] Lore rules extraction returned empty for ch 820
+2026-04-01 11:11:20,023 [INFO]   Stage 2: 5 events
+2026-04-01 11:11:20,023 [INFO]   Stage 3: 14 relations
+2026-04-01 11:11:20,023 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:11:20,023 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:11:20,024 [INFO]   Stage 5: 103 canonical entities
+2026-04-01 11:11:34,174 [INFO]   Chapter 820 committed (year=263)
+2026-04-01 11:11:34,479 [INFO] === Processing Chapter 821 ===
+2026-04-01 11:12:36,577 [WARNING] ch821: Entity extraction returned empty, skipping
+2026-04-01 11:12:36,577 [INFO]   Stage 1: 0 entities
+2026-04-01 11:12:51,433 [INFO] ch821: +0.0年 → 263岁
+2026-04-01 11:13:06,995 [INFO] Relation extraction completed
+2026-04-01 11:13:07,482 [INFO] Timeline extraction completed for ch821
+2026-04-01 11:13:20,758 [WARNING] Lore rules extraction returned empty for ch 821
+2026-04-01 11:13:28,417 [INFO] Event extraction completed
+2026-04-01 11:13:28,439 [INFO]   Stage 2: 9 events
+2026-04-01 11:13:28,444 [INFO]   Stage 3: 13 relations
+2026-04-01 11:13:28,449 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:13:28,449 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:13:28,450 [INFO]   Stage 5: 103 canonical entities
+2026-04-01 11:13:39,417 [INFO]   Chapter 821 committed (year=263)
+2026-04-01 11:13:39,717 [INFO] === Processing Chapter 822 ===
+2026-04-01 11:14:52,521 [WARNING] ch822: Entity extraction returned empty, skipping
+2026-04-01 11:14:52,522 [INFO]   Stage 1: 0 entities
+2026-04-01 11:15:10,404 [INFO] ch822: +0.0年 → 263岁
+2026-04-01 11:15:24,066 [INFO] Timeline extraction completed for ch822
+2026-04-01 11:15:28,021 [INFO] Event extraction completed
+2026-04-01 11:15:35,095 [INFO] Relation extraction completed
+2026-04-01 11:15:42,552 [WARNING] Lore rules extraction returned empty for ch 822
+2026-04-01 11:15:42,553 [INFO]   Stage 2: 6 events
+2026-04-01 11:15:42,553 [INFO]   Stage 3: 14 relations
+2026-04-01 11:15:42,553 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:15:42,553 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:15:42,553 [INFO]   Stage 5: 103 canonical entities
+2026-04-01 11:15:49,323 [INFO]   Chapter 822 committed (year=263)
+2026-04-01 11:15:49,623 [INFO] === Processing Chapter 823 ===
+2026-04-01 11:16:44,547 [WARNING] ch823: Entity extraction returned empty, skipping
+2026-04-01 11:16:44,548 [INFO]   Stage 1: 0 entities
+2026-04-01 11:16:52,713 [INFO] ch823: +0.0年 → 263岁
+2026-04-01 11:17:01,634 [INFO] Timeline extraction completed for ch823
+2026-04-01 11:17:32,701 [WARNING] Lore rules extraction returned empty for ch 823
+2026-04-01 11:17:34,626 [INFO] Relation extraction completed
+2026-04-01 11:17:37,101 [INFO] Event extraction completed
+2026-04-01 11:17:37,102 [INFO]   Stage 2: 8 events
+2026-04-01 11:17:37,102 [INFO]   Stage 3: 19 relations
+2026-04-01 11:17:37,102 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:17:37,102 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:17:37,102 [INFO]   Stage 5: 103 canonical entities
+2026-04-01 11:17:48,812 [INFO]   Chapter 823 committed (year=263)
+2026-04-01 11:17:49,115 [INFO] === Processing Chapter 824 ===
+2026-04-01 11:18:41,485 [INFO]   Stage 1: 21 entities
+2026-04-01 11:18:48,898 [INFO] ch824: +0.0年 → 263岁
+2026-04-01 11:19:02,798 [INFO] Timeline extraction completed for ch824
+2026-04-01 11:19:19,730 [INFO] Relation extraction completed
+2026-04-01 11:19:30,333 [INFO] Event extraction completed
+2026-04-01 11:19:30,614 [WARNING] Lore rules extraction returned empty for ch 824
+2026-04-01 11:19:30,614 [INFO]   Stage 2: 9 events
+2026-04-01 11:19:30,614 [INFO]   Stage 3: 16 relations
+2026-04-01 11:19:30,614 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:19:30,614 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:19:30,614 [INFO]   Stage 5: 116 canonical entities
+2026-04-01 11:19:50,709 [INFO]   Chapter 824 committed (year=263)
+2026-04-01 11:19:51,010 [INFO] === Processing Chapter 825 ===
+2026-04-01 11:21:18,296 [INFO]   Stage 1: 21 entities
+2026-04-01 11:21:27,815 [INFO] ch825: +0.0年 → 263岁
+2026-04-01 11:21:50,785 [INFO] Timeline extraction completed for ch825
+2026-04-01 11:22:02,867 [WARNING] Lore rules extraction returned empty for ch 825
+2026-04-01 11:22:03,607 [INFO] Relation extraction completed
+2026-04-01 11:22:05,979 [INFO] Event extraction completed
+2026-04-01 11:22:05,980 [INFO]   Stage 2: 7 events
+2026-04-01 11:22:05,980 [INFO]   Stage 3: 18 relations
+2026-04-01 11:22:05,980 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:22:05,980 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:22:05,980 [INFO]   Stage 5: 119 canonical entities
+2026-04-01 11:22:21,806 [INFO]   Chapter 825 committed (year=263)
+2026-04-01 11:22:22,111 [INFO] === Processing Chapter 826 ===
+2026-04-01 11:23:19,815 [INFO]   Stage 1: 19 entities
+2026-04-01 11:23:31,871 [INFO] ch826: +0.0年 → 263岁
+2026-04-01 11:23:45,951 [INFO] Timeline extraction completed for ch826
+2026-04-01 11:24:02,100 [WARNING] Lore rules extraction returned empty for ch 826
+2026-04-01 11:24:15,332 [INFO] Relation extraction completed
+2026-04-01 11:24:24,719 [INFO] Event extraction completed
+2026-04-01 11:24:24,720 [INFO]   Stage 2: 10 events
+2026-04-01 11:24:24,720 [INFO]   Stage 3: 19 relations
+2026-04-01 11:24:24,720 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:24:24,720 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:24:24,720 [INFO]   Stage 5: 125 canonical entities
+2026-04-01 11:24:46,131 [INFO]   Chapter 826 committed (year=263)
+2026-04-01 11:24:46,436 [INFO] === Processing Chapter 827 ===
+2026-04-01 11:25:49,465 [WARNING] ch827: Entity extraction returned empty, skipping
+2026-04-01 11:25:49,467 [INFO]   Stage 1: 0 entities
+2026-04-01 11:25:57,301 [INFO] ch827: +0.0年 → 263岁
+2026-04-01 11:26:07,710 [INFO] Timeline extraction completed for ch827
+2026-04-01 11:26:24,578 [INFO] Relation extraction completed
+2026-04-01 11:26:32,934 [INFO] Event extraction completed
+2026-04-01 11:26:38,596 [WARNING] Lore rules extraction returned empty for ch 827
+2026-04-01 11:26:38,597 [INFO]   Stage 2: 6 events
+2026-04-01 11:26:38,597 [INFO]   Stage 3: 12 relations
+2026-04-01 11:26:38,597 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:26:38,597 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:26:38,597 [INFO]   Stage 5: 125 canonical entities
+2026-04-01 11:26:47,542 [INFO]   Chapter 827 committed (year=263)
+2026-04-01 11:26:47,846 [INFO] === Processing Chapter 828 ===
+2026-04-01 11:27:43,142 [INFO]   Stage 1: 26 entities
+2026-04-01 11:27:50,787 [INFO] ch828: +0.0年 → 263岁
+2026-04-01 11:28:07,726 [INFO] Timeline extraction completed for ch828
+2026-04-01 11:28:39,940 [WARNING] Lore rules extraction returned empty for ch 828
+2026-04-01 11:28:47,311 [INFO] Event extraction completed
+2026-04-01 11:28:47,850 [INFO] Relation extraction completed
+2026-04-01 11:28:47,852 [INFO]   Stage 2: 9 events
+2026-04-01 11:28:47,852 [INFO]   Stage 3: 23 relations
+2026-04-01 11:28:47,852 [INFO]   Stage 4: timeline year=263
+2026-04-01 11:28:47,852 [INFO]   Stage 4b: 0 lore rules
+2026-04-01 11:28:47,852 [INFO]   Stage 5: 137 canonical entities
+Traceback (most recent call last):
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/batch_import_501_1000.py", line 740, in <module>
+    main()
+    ~~~~^^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/batch_import_501_1000.py", line 730, in main
+    run_batch_import(
+    ~~~~~~~~~~~~~~~~^
+        start_chapter=args.start,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        skip_zilliz=args.skip_zilliz,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/batch_import_501_1000.py", line 536, in run_batch_import
+    pg_writer.write_source_ref(table, pg_id, sq, ch_num)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/run_import.py", line 1339, in write_source_ref
+    self._safe_exec("src_sv", """
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+        INSERT INTO source_refs (target_table, target_id, source_type, source_chapter,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+          sq.get("char_start", 0), sq.get("char_end", 0),
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          quote[:2000], self.run_id))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/run_import.py", line 1206, in _safe_exec
+    self._exec(f"SAVEPOINT {savepoint}")
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/tt/code/myproject/AMO/server/../scripts/import/run_import.py", line 1196, in _exec
+    cur.execute(sql, params)
+    ~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+

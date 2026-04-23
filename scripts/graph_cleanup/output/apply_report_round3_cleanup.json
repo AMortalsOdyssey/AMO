@@ -1,0 +1,536 @@
+{
+  "mode": "apply",
+  "before": {
+    "active_characters": 886,
+    "active_character_relations": 1140,
+    "alias_duplicate_characters": 34
+  },
+  "plan": {
+    "merge_count": 1,
+    "prune_count": 48,
+    "sample_merges": [
+      {
+        "alias_id": 496,
+        "alias_name": "师伯",
+        "canonical_id": 799,
+        "canonical_name": "燕文",
+        "reason": "character_alias_exact_match"
+      }
+    ],
+    "sample_prunes": [
+      {
+        "character_id": 1248,
+        "character_name": "中年美妇",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1793,
+        "character_name": "乌衣汉子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1418,
+        "character_name": "凶恶汉子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1106,
+        "character_name": "壮硕的汉子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2123,
+        "character_name": "大头怪人",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 517,
+        "character_name": "头罩布袋的怪人",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1519,
+        "character_name": "妖艳的女修",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2344,
+        "character_name": "姓柳的美妇",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1452,
+        "character_name": "娇小女修",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1144,
+        "character_name": "娇艳的少妇",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1812,
+        "character_name": "宫装女修",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 469,
+        "character_name": "巨剑门汉子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 693,
+        "character_name": "把守石门的黑衣人",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1272,
+        "character_name": "灰色鬼影",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 216,
+        "character_name": "灰衣人",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1381,
+        "character_name": "瘦削汉子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1954,
+        "character_name": "白姓女修",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2217,
+        "character_name": "紫袍老妪",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1453,
+        "character_name": "红巾怪人",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 353,
+        "character_name": "红衣人",
+        "reason": "low_value_name_rule"
+      }
+    ],
+    "sample_skipped_aliases": [
+      {
+        "alias_id": 1141,
+        "alias_name": "中年儒生",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 797,
+            "name": "玄夜"
+          },
+          {
+            "id": 500,
+            "name": "王子陵"
+          },
+          {
+            "id": 1797,
+            "name": "韩天啸"
+          },
+          {
+            "id": 1795,
+            "name": "韩瑞"
+          }
+        ]
+      },
+      {
+        "alias_id": 438,
+        "alias_name": "中年道士",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1419,
+            "name": "妙鹤真人"
+          },
+          {
+            "id": 389,
+            "name": "浮云子"
+          },
+          {
+            "id": 1934,
+            "name": "至阳上人"
+          },
+          {
+            "id": 2494,
+            "name": "骅道友"
+          },
+          {
+            "id": 1424,
+            "name": "齐姓道士"
+          }
+        ]
+      },
+      {
+        "alias_id": 215,
+        "alias_name": "儒生",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1912,
+            "name": "仲神师"
+          },
+          {
+            "id": 1407,
+            "name": "古玉"
+          },
+          {
+            "id": 2493,
+            "name": "宁贤侄"
+          },
+          {
+            "id": 500,
+            "name": "王子陵"
+          },
+          {
+            "id": 1797,
+            "name": "韩天啸"
+          },
+          {
+            "id": 1795,
+            "name": "韩瑞"
+          }
+        ]
+      },
+      {
+        "alias_id": 957,
+        "alias_name": "光头大汉",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 964,
+            "name": "妖化大汉"
+          },
+          {
+            "id": 2432,
+            "name": "金花老祖"
+          },
+          {
+            "id": 974,
+            "name": "铁罗"
+          }
+        ]
+      },
+      {
+        "alias_id": 1968,
+        "alias_name": "古魔",
+        "reason": "protected_name"
+      },
+      {
+        "alias_id": 255,
+        "alias_name": "大哥",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 939,
+            "name": "蒙山五友老大"
+          },
+          {
+            "id": 493,
+            "name": "陈大公子"
+          },
+          {
+            "id": 442,
+            "name": "陈氏家族的大公子"
+          },
+          {
+            "id": 94,
+            "name": "韩立大哥"
+          },
+          {
+            "id": 224,
+            "name": "韩铁"
+          },
+          {
+            "id": 927,
+            "name": "黑衣蒙面人大哥"
+          }
+        ]
+      },
+      {
+        "alias_id": 875,
+        "alias_name": "夫人",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 239,
+            "name": "刘氏"
+          },
+          {
+            "id": 1175,
+            "name": "范静梅"
+          },
+          {
+            "id": 1078,
+            "name": "蓝夫人"
+          },
+          {
+            "id": 892,
+            "name": "青儿"
+          }
+        ]
+      },
+      {
+        "alias_id": 2020,
+        "alias_name": "宫主",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 2344,
+            "name": "姓柳的美妇"
+          },
+          {
+            "id": 2381,
+            "name": "温青"
+          }
+        ]
+      },
+      {
+        "alias_id": 960,
+        "alias_name": "少主",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1146,
+            "name": "乌丑"
+          },
+          {
+            "id": 806,
+            "name": "王蝉"
+          },
+          {
+            "id": 901,
+            "name": "铭儿"
+          },
+          {
+            "id": 1497,
+            "name": "青阳门少主"
+          }
+        ]
+      },
+      {
+        "alias_id": 168,
+        "alias_name": "巨汉",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 957,
+            "name": "光头大汉"
+          },
+          {
+            "id": 1890,
+            "name": "天哭先生"
+          },
+          {
+            "id": 169,
+            "name": "曲魂"
+          },
+          {
+            "id": 161,
+            "name": "铁奴"
+          }
+        ]
+      },
+      {
+        "alias_id": 736,
+        "alias_name": "师傅",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 486,
+            "name": "李化元"
+          },
+          {
+            "id": 341,
+            "name": "马师伯"
+          }
+        ]
+      },
+      {
+        "alias_id": 112,
+        "alias_name": "张铁",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 168,
+            "name": "巨汉"
+          },
+          {
+            "id": 169,
+            "name": "曲魂"
+          }
+        ]
+      },
+      {
+        "alias_id": 1501,
+        "alias_name": "恶汉",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1418,
+            "name": "凶恶汉子"
+          },
+          {
+            "id": 1421,
+            "name": "宣姓恶汉"
+          },
+          {
+            "id": 424,
+            "name": "钟吾"
+          }
+        ]
+      },
+      {
+        "alias_id": 934,
+        "alias_name": "教主",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 965,
+            "name": "李破云"
+          },
+          {
+            "id": 951,
+            "name": "神秘教主"
+          }
+        ]
+      },
+      {
+        "alias_id": 1393,
+        "alias_name": "易道友",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1397,
+            "name": "易敬"
+          },
+          {
+            "id": 1383,
+            "name": "锦衣大汉"
+          }
+        ]
+      },
+      {
+        "alias_id": 156,
+        "alias_name": "王门主",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 118,
+            "name": "王6"
+          },
+          {
+            "id": 793,
+            "name": "鬼灵门门主"
+          }
+        ]
+      },
+      {
+        "alias_id": 2516,
+        "alias_name": "童子",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 2309,
+            "name": "天澜圣兽"
+          },
+          {
+            "id": 1864,
+            "name": "蓝师伯"
+          }
+        ]
+      },
+      {
+        "alias_id": 1188,
+        "alias_name": "紫灵仙子",
+        "reason": "protected_name"
+      },
+      {
+        "alias_id": 2363,
+        "alias_name": "美妇",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 2008,
+            "name": "呼大仙师"
+          },
+          {
+            "id": 2328,
+            "name": "颜姓美妇"
+          },
+          {
+            "id": 2326,
+            "name": "颜师侄"
+          }
+        ]
+      },
+      {
+        "alias_id": 953,
+        "alias_name": "老二",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 942,
+            "name": "瘦高的老二"
+          },
+          {
+            "id": 937,
+            "name": "蒙山五友老二"
+          }
+        ]
+      }
+    ]
+  },
+  "applied": {
+    "merged_characters": 1,
+    "pruned_characters": 48,
+    "pruned_relation_types": {
+      "disciple": 3,
+      "elder": 3,
+      "同行/交谈": 1,
+      "敌对": 275,
+      "旧识": 178
+    },
+    "migrated_rows": {
+      "character_relations": 0,
+      "faction_memberships": 0,
+      "item_ownerships": 0,
+      "character_techniques": 0,
+      "character_snapshots": 0,
+      "character_realm_timeline": 0,
+      "events": 0,
+      "master_timeline": 0
+    }
+  },
+  "after": {
+    "active_characters": 837,
+    "active_character_relations": 634,
+    "alias_duplicate_characters": 29
+  },
+  "neo4j_rebuild": {
+    "nodes": {
+      "Character": 837,
+      "Faction": 345,
+      "Artifact": 1683,
+      "Technique": 787,
+      "SpiritBeast": 368,
+      "Location": 694
+    },
+    "relationships": {
+      "RELATION": 634,
+      "BELONGS_TO": 842,
+      "OWNS": 1888,
+      "BONDED_TO": 166,
+      "MASTERS": 355
+    }
+  }
+}

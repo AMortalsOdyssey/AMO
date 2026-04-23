@@ -1,0 +1,149 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: amo
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: amo-server-config
+  namespace: amo
+data:
+  PG_SCHEMA: "amo"
+  NEO4J_URI: "bolt://amo-neo4j.amo.svc.cluster.local:7687"
+  NEO4J_USER: "neo4j"
+  ZILLIZ_URI: "https://replace-with-zilliz-endpoint"
+  ZILLIZ_DB: "ai_social_memory"
+  ZILLIZ_EVENT_COLLECTION: "event_embeddings"
+  ZILLIZ_PERSONA_COLLECTION: "persona_embeddings"
+  ZILLIZ_TECHNIQUE_COLLECTION: "technique_embeddings"
+  ZILLIZ_TEXT_CHUNK_COLLECTION: "text_chunks"
+  LLM_BASE_URL: "https://replace-with-llm-endpoint/v1"
+  LLM_MODEL: "gemini-3-flash-preview"
+  EMBEDDING_PROVIDER: "openai_compatible"
+  EMBEDDING_BASE_URL: "https://replace-with-embedding-endpoint/v1"
+  EMBEDDING_MODEL: "qwen3_embedding_8b_20250716_V1"
+  EMBEDDING_OUTPUT_DIM: "1536"
+  VERTEX_AI_PROJECT: "amortalsodyssey"
+  VERTEX_AI_LOCATION: "us-central1"
+  CORS_ORIGINS: '["https://amo.8xd.io"]'
+  FEEDBACK_FORM_URL: ""
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: amo-server-ksa
+  namespace: amo
+  annotations:
+    iam.gke.io/gcp-service-account: amo-server-sa@amortalsodyssey.iam.gserviceaccount.com
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amo-server
+  namespace: amo
+  labels:
+    app: amo-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amo-server
+  template:
+    metadata:
+      labels:
+        app: amo-server
+    spec:
+      serviceAccountName: amo-server-ksa
+      containers:
+        - name: amo-server
+          image: asia-east2-docker.pkg.dev/amortalsodyssey/amo/amo-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8100
+          envFrom:
+            - configMapRef:
+                name: amo-server-config
+          env:
+            - name: PG_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: amo-server-secrets
+                  key: PG_DSN
+            - name: NEO4J_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: amo-server-secrets
+                  key: NEO4J_PASSWORD
+            - name: ZILLIZ_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: amo-server-secrets
+                  key: ZILLIZ_TOKEN
+            - name: LLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: amo-server-secrets
+                  key: LLM_API_KEY
+            - name: EMBEDDING_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: amo-server-secrets
+                  key: EMBEDDING_API_KEY
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8100
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8100
+            initialDelaySeconds: 10
+            periodSeconds: 30
+        - name: cloud-sql-proxy
+          image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.18.3
+          args:
+            - "--structured-logs"
+            - "--port=5432"
+            - "amortalsodyssey:asia-east2:amo-pg"
+          securityContext:
+            runAsNonRoot: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amo-server
+  namespace: amo
+  annotations:
+    cloud.google.com/backend-config: '{"ports":{"8100":"amo-server-backendconfig"}}'
+spec:
+  selector:
+    app: amo-server
+  ports:
+    - name: http
+      port: 8100
+      targetPort: 8100
+  type: ClusterIP
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: amo-server-backendconfig
+  namespace: amo
+spec:
+  timeoutSec: 60

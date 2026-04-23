@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Book raw data (too large for git)
+book/raw/
+book/chapters/
+book/*.txt
+
+# Import script output (large JSON artifacts)
+scripts/import/output/
+scripts/import/import_stats.json
+
+# Next.js
+.next/
+out/
+
+# Claude Code
+.claude/
+
+# Docs (internal only)
+docs/

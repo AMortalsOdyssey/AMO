@@ -1,0 +1,192 @@
+[
+  {
+    "chapter_start": 1,
+    "chapter_end": 9,
+    "description": "七玄门入门与神手谷初修",
+    "key_events": [
+      "参加入门测试",
+      "拜入墨大夫门下",
+      "结识张铁"
+    ]
+  },
+  {
+    "chapter_start": 10,
+    "chapter_end": 26,
+    "description": "获神秘小瓶与绿液催熟实验",
+    "key_events": [
+      "获得神秘瓶子",
+      "发现绿液奇效",
+      "掌握催熟规律"
+    ]
+  },
+  {
+    "chapter_start": 27,
+    "chapter_end": 34,
+    "description": "墨大夫回谷与师徒暗中博弈",
+    "key_events": [
+      "墨大夫带人回谷",
+      "被迫服下尸虫丸",
+      "结盟厉飞雨"
+    ]
+  },
+  {
+    "chapter_start": 35,
+    "chapter_end": 44,
+    "description": "获取眨眼剑法与隐秘修炼",
+    "key_events": [
+      "盗取七绝堂秘籍",
+      "领悟眨眼剑法",
+      "识破监视并解毒"
+    ]
+  },
+  {
+    "chapter_start": 45,
+    "chapter_end": 50,
+    "description": "神手谷决战智斗墨大夫",
+    "key_events": [
+      "师徒彻底反目",
+      "诈语突袭反击",
+      "缠香丝要挟"
+    ]
+  },
+  {
+    "chapter_start": 51,
+    "chapter_end": 64,
+    "description": "神手谷墨大夫夺舍反被杀",
+    "key_events": [
+      "墨大夫夺舍失败",
+      "余子童阴谋败露",
+      "收服曲魂"
+    ]
+  },
+  {
+    "chapter_start": 65,
+    "chapter_end": 73,
+    "description": "独霸神手谷救治李长老",
+    "key_events": [
+      "获长春功后续",
+      "立规矩独占山谷",
+      "解毒李长老"
+    ]
+  },
+  {
+    "chapter_start": 74,
+    "chapter_end": 87,
+    "description": "七玄门与野狼帮全面开战",
+    "key_events": [
+      "野狼帮攻山",
+      "谈判队伍被歼",
+      "签订死契血斗"
+    ]
+  },
+  {
+    "chapter_start": 88,
+    "chapter_end": 95,
+    "description": "落日峰智杀金光上人",
+    "key_events": [
+      "识破驱物术",
+      "夺取飞剑符箓",
+      "击杀贾天龙"
+    ]
+  },
+  {
+    "chapter_start": 96,
+    "chapter_end": 100,
+    "description": "震慑门主辞别厉飞雨",
+    "key_events": [
+      "密会王门主",
+      "留信赠药告别",
+      "斩断尘缘离家"
+    ]
+  },
+  {
+    "chapter_start": 101,
+    "chapter_end": 125,
+    "description": "嘉元城墨府博弈与夺帮",
+    "key_events": [
+      "收服孙二狗",
+      "墨府对峙谈判",
+      "毒杀沈重山夺帮"
+    ]
+  },
+  {
+    "chapter_start": 126,
+    "chapter_end": 143,
+    "description": "拔除寒毒与太南小会",
+    "key_events": [
+      "彻底拔除寒毒",
+      "太南谷交易历练",
+      "换取法宝残片"
+    ]
+  },
+  {
+    "chapter_start": 144,
+    "chapter_end": 150,
+    "description": "加入黄枫谷与接管药园",
+    "key_events": [
+      "持令加入黄枫谷",
+      "交易让出筑基丹",
+      "接管百药园任务"
+    ]
+  },
+  {
+    "chapter_start": 151,
+    "chapter_end": 161,
+    "description": "百药园筹备筑基与血禁",
+    "key_events": [
+      "接管百药园",
+      "获取筑基丹配方",
+      "决定参加血色试炼"
+    ]
+  },
+  {
+    "chapter_start": 162,
+    "chapter_end": 171,
+    "description": "坊市换宝与斩杀陆师兄",
+    "key_events": [
+      "万宝楼换取符宝",
+      "撞破陆师兄阴谋",
+      "击杀陆师兄救陈师妹"
+    ]
+  },
+  {
+    "chapter_start": 172,
+    "chapter_end": 179,
+    "description": "七派集结共入血色禁地",
+    "key_events": [
+      "报名血色试炼",
+      "三派立下赌约",
+      "联手破除禁地大阵"
+    ]
+  },
+  {
+    "chapter_start": 180,
+    "chapter_end": 190,
+    "description": "禁地初期遭遇与击杀封岳",
+    "key_events": [
+      "传送至乌龙潭",
+      "遭遇多派混战",
+      "天雷子击杀封岳"
+    ]
+  },
+  {
+    "chapter_start": 191,
+    "chapter_end": 196,
+    "description": "深入中心区与环形山潜伏",
+    "key_events": [
+      "进入禁地中心区",
+      "与钟吾交换情报",
+      "潜入环形山密林"
+    ]
+  },
+  {
+    "chapter_start": 197,
+    "chapter_end": 200,
+    "description": "环形山智斗蜈蚣争夺灵草",
+    "key_events": [
+      "发现紫猴花",
+      "智斗重创巨蜈蚣",
+      "多方争夺灵草"
+    ]
+  }
+]

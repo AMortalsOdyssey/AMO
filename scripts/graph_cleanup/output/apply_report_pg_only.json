@@ -1,0 +1,685 @@
+{
+  "mode": "apply",
+  "before": {
+    "active_characters": 1453,
+    "active_character_relations": 1693,
+    "alias_duplicate_characters": 341
+  },
+  "plan": {
+    "merge_count": 162,
+    "prune_count": 350,
+    "sample_merges": [
+      {
+        "alias_id": 2118,
+        "alias_name": "七叔",
+        "canonical_id": 2123,
+        "canonical_name": "大头怪人",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 984,
+        "alias_name": "七师姐",
+        "canonical_id": 988,
+        "canonical_name": "钟卫娘",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 2303,
+        "alias_name": "万年尸熊",
+        "canonical_id": 2300,
+        "canonical_name": "尸熊",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 97,
+        "alias_name": "三叔",
+        "canonical_id": 100,
+        "canonical_name": "韩胖子",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 263,
+        "alias_name": "三夫人",
+        "canonical_id": 239,
+        "canonical_name": "刘氏",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 678,
+        "alias_name": "丑汉钟吾",
+        "canonical_id": 424,
+        "canonical_name": "钟吾",
+        "reason": "alias_component_canonicalized"
+      },
+      {
+        "alias_id": 1074,
+        "alias_name": "中年妇人",
+        "canonical_id": 1078,
+        "canonical_name": "蓝夫人",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 859,
+        "alias_name": "二夫人",
+        "canonical_id": 181,
+        "canonical_name": "李氏",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 2037,
+        "alias_name": "二小姐",
+        "canonical_id": 2043,
+        "canonical_name": "曹梦容",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 877,
+        "alias_name": "二老爷",
+        "canonical_id": 876,
+        "canonical_name": "二爷",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 1763,
+        "alias_name": "云芝",
+        "canonical_id": 455,
+        "canonical_name": "菡云芝",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 1026,
+        "alias_name": "五色门之主",
+        "canonical_id": 1032,
+        "canonical_name": "李姓门主",
+        "reason": "alias_component_canonicalized"
+      },
+      {
+        "alias_id": 869,
+        "alias_name": "五色门门主",
+        "canonical_id": 1032,
+        "canonical_name": "李姓门主",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 1757,
+        "alias_name": "付家老祖",
+        "canonical_id": 1765,
+        "canonical_name": "付天化",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 2322,
+        "alias_name": "任某",
+        "canonical_id": 2323,
+        "canonical_name": "任碧",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 1111,
+        "alias_name": "侃琴真人",
+        "canonical_id": 1110,
+        "canonical_name": "袁君真人",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 292,
+        "alias_name": "侏儒",
+        "canonical_id": 1890,
+        "canonical_name": "天哭先生",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 1661,
+        "alias_name": "俞师弟",
+        "canonical_id": 1665,
+        "canonical_name": "俞姓青年",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 1302,
+        "alias_name": "儒衫老者",
+        "canonical_id": 1265,
+        "canonical_name": "青易居士",
+        "reason": "character_alias_exact_match"
+      },
+      {
+        "alias_id": 2122,
+        "alias_name": "元师弟",
+        "canonical_id": 2100,
+        "canonical_name": "元姓大汉",
+        "reason": "character_alias_exact_match"
+      }
+    ],
+    "sample_prunes": [
+      {
+        "character_id": 357,
+        "character_name": "6师兄",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1087,
+        "character_name": "丁姓老者",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2346,
+        "character_name": "丁师弟",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 281,
+        "character_name": "七姐",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1352,
+        "character_name": "三仙宗老者",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 208,
+        "character_name": "三位师叔",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1942,
+        "character_name": "三大修士",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 945,
+        "character_name": "三妹",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 983,
+        "character_name": "三师兄",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1752,
+        "character_name": "上古修士",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 848,
+        "character_name": "丫鬟",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 447,
+        "character_name": "中年人",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1105,
+        "character_name": "中年修士",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 948,
+        "character_name": "中年女子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 505,
+        "character_name": "中年男子",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 610,
+        "character_name": "中年管事",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 757,
+        "character_name": "丰师兄",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 2238,
+        "character_name": "乌冠老者",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1804,
+        "character_name": "乌衣修士",
+        "reason": "low_value_name_rule"
+      },
+      {
+        "character_id": 1908,
+        "character_name": "乐姓女子",
+        "reason": "low_value_name_rule"
+      }
+    ],
+    "sample_skipped_aliases": [
+      {
+        "alias_id": 357,
+        "alias_name": "6师兄",
+        "reason": "low_value_canonical_target",
+        "targets": [
+          {
+            "id": 381,
+            "name": "陆师兄"
+          }
+        ]
+      },
+      {
+        "alias_id": 2346,
+        "alias_name": "丁师弟",
+        "reason": "low_value_canonical_target",
+        "targets": [
+          {
+            "id": 1087,
+            "name": "丁姓老者"
+          }
+        ]
+      },
+      {
+        "alias_id": 945,
+        "alias_name": "三妹",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 260,
+            "name": "三娘"
+          },
+          {
+            "id": 941,
+            "name": "蒙山五友老三"
+          }
+        ]
+      },
+      {
+        "alias_id": 983,
+        "alias_name": "三师兄",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1793,
+            "name": "乌衣汉子"
+          },
+          {
+            "id": 987,
+            "name": "刘靖"
+          }
+        ]
+      },
+      {
+        "alias_id": 2263,
+        "alias_name": "丑妇",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 2267,
+            "name": "圭灵"
+          },
+          {
+            "id": 2271,
+            "name": "灵"
+          }
+        ]
+      },
+      {
+        "alias_id": 355,
+        "alias_name": "丑汉",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 678,
+            "name": "丑汉钟吾"
+          },
+          {
+            "id": 424,
+            "name": "钟吾"
+          }
+        ]
+      },
+      {
+        "alias_id": 848,
+        "alias_name": "丫鬟",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 922,
+            "name": "小丫鬟"
+          },
+          {
+            "id": 1076,
+            "name": "紫莲"
+          }
+        ]
+      },
+      {
+        "alias_id": 447,
+        "alias_name": "中年人",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1257,
+            "name": "万天明"
+          },
+          {
+            "id": 1105,
+            "name": "中年修士"
+          },
+          {
+            "id": 1742,
+            "name": "吕姓中年人"
+          },
+          {
+            "id": 1750,
+            "name": "吕姓元婴修士"
+          },
+          {
+            "id": 1682,
+            "name": "天泉峰师祖"
+          },
+          {
+            "id": 1193,
+            "name": "孙师叔"
+          },
+          {
+            "id": 1169,
+            "name": "杂货铺掌柜"
+          },
+          {
+            "id": 1147,
+            "name": "极阴祖师"
+          },
+          {
+            "id": 2224,
+            "name": "柱南将军"
+          },
+          {
+            "id": 366,
+            "name": "田卜离"
+          },
+          {
+            "id": 1112,
+            "name": "登仙阁中年人"
+          },
+          {
+            "id": 2318,
+            "name": "谷天启"
+          },
+          {
+            "id": 2230,
+            "name": "赵掌柜"
+          },
+          {
+            "id": 1213,
+            "name": "金青"
+          },
+          {
+            "id": 1189,
+            "name": "隐煞门门主"
+          },
+          {
+            "id": 1100,
+            "name": "顾东主"
+          }
+        ]
+      },
+      {
+        "alias_id": 1105,
+        "alias_name": "中年修士",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1447,
+            "name": "云天啸"
+          },
+          {
+            "id": 2260,
+            "name": "叶家长老"
+          },
+          {
+            "id": 1193,
+            "name": "孙师叔"
+          },
+          {
+            "id": 2087,
+            "name": "杨师侄"
+          },
+          {
+            "id": 1147,
+            "name": "极阴祖师"
+          },
+          {
+            "id": 2368,
+            "name": "甘姓中年人"
+          },
+          {
+            "id": 1621,
+            "name": "白影修士"
+          },
+          {
+            "id": 2230,
+            "name": "赵掌柜"
+          },
+          {
+            "id": 1213,
+            "name": "金青"
+          },
+          {
+            "id": 1189,
+            "name": "隐煞门门主"
+          },
+          {
+            "id": 1251,
+            "name": "黄脸修士"
+          }
+        ]
+      },
+      {
+        "alias_id": 1141,
+        "alias_name": "中年儒生",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1191,
+            "name": "孟长老"
+          },
+          {
+            "id": 797,
+            "name": "玄夜"
+          },
+          {
+            "id": 500,
+            "name": "王子陵"
+          },
+          {
+            "id": 1797,
+            "name": "韩天啸"
+          },
+          {
+            "id": 1795,
+            "name": "韩瑞"
+          }
+        ]
+      },
+      {
+        "alias_id": 505,
+        "alias_name": "中年男子",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1498,
+            "name": "灰衣男子"
+          },
+          {
+            "id": 493,
+            "name": "陈大公子"
+          },
+          {
+            "id": 442,
+            "name": "陈氏家族的大公子"
+          },
+          {
+            "id": 697,
+            "name": "高高瘦瘦的中年男子"
+          }
+        ]
+      },
+      {
+        "alias_id": 438,
+        "alias_name": "中年道士",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1419,
+            "name": "妙鹤真人"
+          },
+          {
+            "id": 389,
+            "name": "浮云子"
+          },
+          {
+            "id": 1934,
+            "name": "至阳上人"
+          },
+          {
+            "id": 2494,
+            "name": "骅道友"
+          },
+          {
+            "id": 1424,
+            "name": "齐姓道士"
+          }
+        ]
+      },
+      {
+        "alias_id": 1804,
+        "alias_name": "乌衣修士",
+        "reason": "low_value_canonical_target",
+        "targets": [
+          {
+            "id": 1803,
+            "name": "询姓修士"
+          }
+        ]
+      },
+      {
+        "alias_id": 876,
+        "alias_name": "二爷",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 877,
+            "name": "二老爷"
+          },
+          {
+            "id": 227,
+            "name": "孙二狗"
+          }
+        ]
+      },
+      {
+        "alias_id": 1441,
+        "alias_name": "二老",
+        "reason": "low_value_canonical_target",
+        "targets": [
+          {
+            "id": 820,
+            "name": "鬼灵门长老"
+          }
+        ]
+      },
+      {
+        "alias_id": 397,
+        "alias_name": "于师兄",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 738,
+            "name": "于坤"
+          },
+          {
+            "id": 332,
+            "name": "于执事"
+          }
+        ]
+      },
+      {
+        "alias_id": 1827,
+        "alias_name": "云姓老者",
+        "reason": "low_value_canonical_target",
+        "targets": [
+          {
+            "id": 1821,
+            "name": "白衫老者"
+          }
+        ]
+      },
+      {
+        "alias_id": 1651,
+        "alias_name": "云道友",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 2086,
+            "name": "云师兄"
+          },
+          {
+            "id": 1086,
+            "name": "红脸老者"
+          }
+        ]
+      },
+      {
+        "alias_id": 952,
+        "alias_name": "五妹",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 944,
+            "name": "年轻女子"
+          },
+          {
+            "id": 410,
+            "name": "白衣女子"
+          },
+          {
+            "id": 938,
+            "name": "蒙山五友老五"
+          }
+        ]
+      },
+      {
+        "alias_id": 1665,
+        "alias_name": "俞姓青年",
+        "reason": "ambiguous_alias_targets",
+        "targets": [
+          {
+            "id": 1677,
+            "name": "俞君"
+          },
+          {
+            "id": 1661,
+            "name": "俞师弟"
+          }
+        ]
+      }
+    ]
+  },
+  "applied": {
+    "merged_characters": 162,
+    "pruned_characters": 350,
+    "migrated_rows": {
+      "character_relations": 311,
+      "faction_memberships": 107,
+      "item_ownerships": 137,
+      "character_techniques": 52,
+      "character_snapshots": 61,
+      "character_realm_timeline": 17,
+      "events": 177,
+      "master_timeline": 143
+    }
+  },
+  "after": {
+    "active_characters": 941,
+    "active_character_relations": 1195,
+    "alias_duplicate_characters": 57
+  }
+}

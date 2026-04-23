@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: amo-web-config
+  namespace: amo
+data:
+  # 后端集群内地址，由 Next.js 代理层使用
+  API_BASE: "http://amo-server.amo.svc.cluster.local:8100/api"
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: amo-managed-cert
+  namespace: amo
+spec:
+  domains:
+    - amo.8xd.io
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: amo-frontend-config
+  namespace: amo
+spec:
+  redirectToHttps:
+    enabled: true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amo-web
+  namespace: amo
+  labels:
+    app: amo-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amo-web
+  template:
+    metadata:
+      labels:
+        app: amo-web
+    spec:
+      containers:
+        - name: amo-web
+          image: asia-east2-docker.pkg.dev/amortalsodyssey/amo/amo-web:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: amo-web-config
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amo-web
+  namespace: amo
+spec:
+  selector:
+    app: amo-web
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: amo-web
+  namespace: amo
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "amo-prod-ip"
+    networking.gke.io/managed-certificates: "amo-managed-cert"
+    networking.gke.io/v1beta1.FrontendConfig: "amo-frontend-config"
+spec:
+  rules:
+    - host: amo.8xd.io
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: amo-server
+                port:
+                  name: http
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: amo-web
+                port:
+                  number: 3000
