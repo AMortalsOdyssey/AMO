@@ -36,9 +36,13 @@ scripts/import/import_stats.json
 # Next.js
 .next/
 out/
+web/.npm-cache/
 
 # Claude Code
 .claude/
+
+# Local private secrets
+private/
 
 # Docs (internal only)
 docs/

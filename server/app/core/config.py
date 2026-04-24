@@ -47,7 +47,7 @@ class Settings(BaseSettings):
     feedback_form_url: str | None = None
     posthog_public_key: str | None = None
     posthog_host: str = "https://us.i.posthog.com"
-    public_app_url: str = "http://localhost:3000"
+    public_app_url: str = "http://localhost:3100"
     support_email: str = "support@8xd.io"
     app_code: str = "amo"
 
