@@ -5,9 +5,12 @@ from typing import AsyncGenerator
 
 from neo4j import AsyncDriver, AsyncGraphDatabase
 from pymilvus import MilvusClient
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.core.config import settings
+from app.models.tables import Base
+from app.services.billing import ensure_default_product
 
 log = logging.getLogger("amo.db")
 
@@ -25,6 +28,16 @@ async_session = async_sessionmaker(engine, expire_on_commit=False)
 async def get_pg() -> AsyncGenerator[AsyncSession, None]:
     async with async_session() as session:
         yield session
+
+
+async def init_postgres():
+    async with engine.begin() as conn:
+        await conn.execute(text(f'CREATE SCHEMA IF NOT EXISTS "{settings.pg_schema}"'))
+        await conn.run_sync(Base.metadata.create_all)
+
+    async with async_session() as session:
+        await ensure_default_product(session)
+        await session.commit()
 
 
 # ── Neo4j ───────────────────────────────────────────────────
@@ -117,6 +130,12 @@ def get_milvus() -> MilvusClient | None:
 async def lifespan(_app):
     import logging
     log = logging.getLogger("amo")
+    try:
+        await init_postgres()
+        log.info("PostgreSQL schema initialized")
+    except Exception as e:
+        log.warning(f"PostgreSQL initialization failed: {e}")
+        raise
     # Neo4j: allow startup even if unavailable
     try:
         await init_neo4j()

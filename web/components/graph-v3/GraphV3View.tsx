@@ -873,7 +873,7 @@ export default function GraphV3View({ initialSearchParams }: GraphV3ViewProps) {
                 }}
                 className="accent-emerald-300"
               />
-              排除韩立
+              排除主角
             </label>
             <div className="w-full rounded-2xl border border-white/8 bg-white/4 px-3 py-2.5 text-white/82 xl:min-w-[560px]">
               <div className="flex items-center justify-between gap-3">

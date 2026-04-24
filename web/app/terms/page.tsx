@@ -8,7 +8,7 @@ export default function TermsPage() {
           </div>
           <h1 className="text-3xl font-semibold tracking-[0.08em] text-white/92">用户协议</h1>
           <p className="mt-3 text-sm leading-6 text-white/54">
-            本协议适用于你访问和使用 `amo.8xd.io` 提供的世界观数据库、角色对话、剧情演绎、图谱浏览及相关功能。
+            本协议适用于你访问和使用 `amo.8xd.io` 提供的资料索引、角色对话、交互演绎、图谱浏览及相关功能。
           </p>
         </div>
 
@@ -16,7 +16,7 @@ export default function TermsPage() {
           <section>
             <h2 className="mb-2 text-lg font-medium text-white/88">1. 服务说明</h2>
             <p>
-              本站提供基于《凡人修仙传》内容整理与交互演绎的实验性服务。我们会持续调整功能、模型、内容展示与服务结构，必要时可暂停、变更或下线部分功能。
+              本站提供基于公开资料整理、结构化建模与交互演绎的实验性服务。我们会持续调整功能、模型、内容展示与服务结构，必要时可暂停、变更或下线部分功能。
             </p>
           </section>
 
@@ -30,7 +30,7 @@ export default function TermsPage() {
           <section>
             <h2 className="mb-2 text-lg font-medium text-white/88">3. 内容与免责</h2>
             <p>
-              站内部分内容来自结构化整理、模型生成或自动推断，可能存在误差、缺漏或与原作不完全一致的情况。你应自行判断相关内容的准确性，本站不对因使用这些内容造成的直接或间接损失承担责任。
+              站内部分内容来自公开资料整理、结构化建模、模型生成或自动推断，可能存在误差、缺漏或与既有资料不完全一致的情况。你应自行判断相关内容的准确性，本站不对因使用这些内容造成的直接或间接损失承担责任。
             </p>
           </section>
 

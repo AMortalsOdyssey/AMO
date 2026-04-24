@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "asyncpg>=0.31.0",
     "fastapi>=0.135.1",
+    "firebase-admin>=7.1.0",
     "httpx>=0.28.1",
     "neo4j>=6.1.0",
     "pydantic-settings>=2.13.1",

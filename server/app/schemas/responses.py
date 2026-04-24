@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -214,6 +216,103 @@ class ChatRequest(BaseModel):
 class ChatChunk(BaseModel):
     content: str
     done: bool = False
+
+
+# ── Billing ─────────────────────────────────────────────────
+
+class BillingSummaryOut(BaseModel):
+    client_token: str
+    remaining_credits: int
+    free_credits_granted: int
+    paid_credits_granted: int
+    used_credits: int
+    free_credits_remaining: int
+    paid_credits_remaining: int
+
+
+class BillingProductOut(BaseModel):
+    product_key: str
+    display_name: str
+    description: str | None = None
+    price_cents: int
+    currency: str
+    credits_per_unit: int
+    is_active: bool
+    billing_type: str
+    creem_product_id_configured: bool
+    mode: str
+
+
+class BillingCatalogOut(BaseModel):
+    provider: str = "creem"
+    mode: str
+    support_email: str | None = None
+    free_allowance_credits: int
+    pack: BillingProductOut
+    summary: BillingSummaryOut
+
+
+class BillingCheckoutOut(BaseModel):
+    request_id: str
+    provider: str
+    mode: str
+    status: str
+    checkout_url: str | None = None
+    amount_cents: int
+    currency: str
+    credits_to_grant: int
+    completed_at: datetime | None = None
+
+
+class BillingCheckoutDetailOut(BaseModel):
+    checkout: BillingCheckoutOut
+    summary: BillingSummaryOut
+
+
+class BillingCheckoutCreateRequest(BaseModel):
+    email: str | None = None
+
+
+class BillingMockCompleteRequest(BaseModel):
+    outcome: str = "success"
+
+
+class BillingProductUpdateRequest(BaseModel):
+    display_name: str | None = None
+    description: str | None = None
+    price_cents: int | None = None
+    currency: str | None = None
+    credits_per_unit: int | None = None
+    is_active: bool | None = None
+    creem_product_id: str | None = None
+
+
+class BillingWebhookAckOut(BaseModel):
+    received: bool = True
+    event_id: str
+    event_type: str
+    status: str
+
+
+# ── Auth ────────────────────────────────────────────────────
+
+class AuthUserOut(BaseModel):
+    id: str
+    email: str
+    email_verified: bool
+    display_name: str | None = None
+    photo_url: str | None = None
+    providers: list[str] = []
+
+
+class AuthSessionOut(BaseModel):
+    authenticated: bool
+    user: AuthUserOut | None = None
+    session_expires_at: datetime | None = None
+
+
+class AuthSessionCreateRequest(BaseModel):
+    id_token: str
 
 
 # ── Common ──────────────────────────────────────────────────

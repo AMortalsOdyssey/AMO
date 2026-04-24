@@ -3,15 +3,16 @@ import logging
 from collections.abc import AsyncGenerator
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sse_starlette.sse import EventSourceResponse
 
 from app.core.config import settings
-from app.db.connections import get_milvus, get_pg
+from app.db.connections import async_session, get_milvus, get_pg
 from app.models.tables import Character, CharacterSnapshot
 from app.schemas.responses import ChatRequest
+from app.services import billing as billing_service
 from app.services.embeddings import get_embedding_vector
 
 router = APIRouter(prefix="/chat", tags=["chat"])
@@ -199,7 +200,11 @@ async def _stream_llm(
 
 
 @router.post("")
-async def chat(req: ChatRequest, db: AsyncSession = Depends(get_pg)):
+async def chat(
+    req: ChatRequest,
+    x_amo_client_token: str | None = Header(default=None, alias="X-AMO-Client-Token"),
+    db: AsyncSession = Depends(get_pg),
+):
     logger.info(
         "chat request received",
         extra={
@@ -267,10 +272,72 @@ async def chat(req: ChatRequest, db: AsyncSession = Depends(get_pg)):
         req.message,
     )
 
+    try:
+        client_token = billing_service.require_client_token(x_amo_client_token)
+    except billing_service.BillingError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.to_detail()) from exc
+
+    try:
+        _, usage_entry, summary = await billing_service.consume_chat_credit(
+            db,
+            client_token,
+            message_length=len(req.message),
+            character_id=req.character_id,
+        )
+        await db.commit()
+    except billing_service.BillingError as exc:
+        await db.rollback()
+        raise HTTPException(status_code=exc.status_code, detail=exc.to_detail()) from exc
+
     # 5. Stream response
     async def event_generator():
-        async for chunk in _stream_llm(system_prompt, context, req.message, req.history):
-            yield {"data": json.dumps({"content": chunk, "done": False}, ensure_ascii=False)}
-        yield {"data": json.dumps({"content": "", "done": True}, ensure_ascii=False)}
+        has_streamed_content = False
+        try:
+            async for chunk in _stream_llm(system_prompt, context, req.message, req.history):
+                has_streamed_content = True
+                yield {"data": json.dumps({"content": chunk, "done": False}, ensure_ascii=False)}
+            yield {
+                "data": json.dumps(
+                    {
+                        "content": "",
+                        "done": True,
+                        "summary": summary.to_dict(),
+                    },
+                    ensure_ascii=False,
+                )
+            }
+        except Exception:
+            logger.exception(
+                "chat stream failed after credit reservation",
+                extra={
+                    "character_id": req.character_id,
+                    "usage_entry_id": usage_entry.id,
+                },
+            )
+            refunded_summary = summary
+            if not has_streamed_content:
+                async with async_session() as refund_db:
+                    try:
+                        refunded_summary = await billing_service.refund_chat_credit(
+                            refund_db,
+                            client_token,
+                            usage_entry=usage_entry,
+                            reason="stream_generation_failed",
+                        )
+                        await refund_db.commit()
+                    except Exception:
+                        await refund_db.rollback()
+                        logger.exception("failed to refund chat credit", extra={"usage_entry_id": usage_entry.id})
+            yield {
+                "data": json.dumps(
+                    {
+                        "content": "对话生成失败，请重试。" if has_streamed_content else "对话生成失败，额度已返还，请重试。",
+                        "done": True,
+                        "error": True,
+                        "summary": refunded_summary.to_dict(),
+                    },
+                    ensure_ascii=False,
+                )
+            }
 
     return EventSourceResponse(event_generator())

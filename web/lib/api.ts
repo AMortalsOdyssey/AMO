@@ -1,13 +1,41 @@
 // 前端调用本地代理，代理层再调用后端
 // 代理路径: /api/* -> amo-web Pod -> amo-server Pod
+import { getOrCreateClientToken } from "@/lib/clientIdentity";
+
 const API_BASE = "/api";
 
+export function buildApiHeaders(init?: HeadersInit, options?: { json?: boolean }) {
+  const headers = new Headers(init);
+  const wantsJson = options?.json ?? true;
+  if (wantsJson && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  const clientToken = getOrCreateClientToken();
+  if (clientToken && !headers.has("X-AMO-Client-Token")) {
+    headers.set("X-AMO-Client-Token", clientToken);
+  }
+
+  return headers;
+}
+
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const wantsJson = !(typeof FormData !== "undefined" && init?.body instanceof FormData);
   const res = await fetch(`${API_BASE}${path}`, {
     ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
+    headers: buildApiHeaders(init?.headers, { json: wantsJson }),
   });
-  if (!res.ok) throw new Error(`API ${path}: ${res.status}`);
+  if (!res.ok) {
+    const contentType = res.headers.get("Content-Type") || "";
+    let detail = res.statusText || "Request failed";
+    if (contentType.includes("application/json")) {
+      const payload = await res.json();
+      detail = payload?.detail?.message || payload?.error || JSON.stringify(payload);
+    } else {
+      detail = await res.text();
+    }
+    throw new Error(`API ${path}: ${res.status} ${detail}`);
+  }
   return res.json();
 }
 
@@ -130,4 +158,68 @@ export interface SiteConfig {
   feedback_form_url: string | null;
   posthog_public_key?: string | null;
   posthog_host?: string | null;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  email_verified: boolean;
+  display_name: string | null;
+  photo_url: string | null;
+  providers: string[];
+}
+
+export interface AuthSession {
+  authenticated: boolean;
+  user: AuthUser | null;
+  session_expires_at: string | null;
+}
+
+export interface BillingSummary {
+  client_token: string;
+  remaining_credits: number;
+  free_credits_granted: number;
+  paid_credits_granted: number;
+  used_credits: number;
+  free_credits_remaining: number;
+  paid_credits_remaining: number;
+}
+
+export interface BillingProduct {
+  product_key: string;
+  display_name: string;
+  description: string | null;
+  price_cents: number;
+  currency: string;
+  credits_per_unit: number;
+  is_active: boolean;
+  billing_type: string;
+  creem_product_id_configured: boolean;
+  mode: string;
+}
+
+export interface BillingCatalog {
+  provider: string;
+  mode: string;
+  support_email: string | null;
+  free_allowance_credits: number;
+  pack: BillingProduct;
+  summary: BillingSummary;
+}
+
+export interface BillingCheckout {
+  request_id: string;
+  provider: string;
+  mode: string;
+  status: string;
+  checkout_url: string | null;
+  amount_cents: number;
+  currency: string;
+  credits_to_grant: number;
+  completed_at: string | null;
+}
+
+export interface BillingCheckoutDetail {
+  checkout: BillingCheckout;
+  summary: BillingSummary;
 }

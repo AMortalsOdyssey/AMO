@@ -1,6 +1,7 @@
 from datetime import datetime
+from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -405,3 +406,160 @@ class WorldlineChapter(Base):
     canon_divergence: Mapped[bool] = mapped_column(Boolean, default=False)  # 是否偏离原著
     present_characters: Mapped[list] = mapped_column(JSONB, default=list)  # 在场角色
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class BillingCustomer(Base):
+    __tablename__ = "billing_customers"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    client_token: Mapped[str] = mapped_column(String(96), nullable=False, unique=True, index=True)
+    email: Mapped[str | None] = mapped_column(String(255))
+    creem_customer_id: Mapped[str | None] = mapped_column(String(100), index=True)
+    credit_balance: Mapped[int] = mapped_column(Integer, default=0)
+    free_credits_granted: Mapped[int] = mapped_column(Integer, default=0)
+    paid_credits_granted: Mapped[int] = mapped_column(Integer, default=0)
+    total_used_credits: Mapped[int] = mapped_column(Integer, default=0)
+    free_credit_granted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+
+class BillingProduct(Base):
+    __tablename__ = "billing_products"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    product_key: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, index=True)
+    display_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    description: Mapped[str | None] = mapped_column(Text)
+    billing_type: Mapped[str] = mapped_column(String(30), default="one_time")
+    price_cents: Mapped[int] = mapped_column(Integer, nullable=False)
+    currency: Mapped[str] = mapped_column(String(12), nullable=False, default="USD")
+    credits_per_unit: Mapped[int] = mapped_column(Integer, nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    creem_product_id: Mapped[str | None] = mapped_column(String(100))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+
+class BillingCheckout(Base):
+    __tablename__ = "billing_checkouts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    request_id: Mapped[str] = mapped_column(String(96), nullable=False, unique=True, index=True)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("billing_customers.id"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("billing_products.id"), nullable=False)
+    provider: Mapped[str] = mapped_column(String(30), default="creem")
+    mode: Mapped[str] = mapped_column(String(30), default="local_mock")
+    status: Mapped[str] = mapped_column(String(30), default="pending", index=True)
+    checkout_url: Mapped[str | None] = mapped_column(Text)
+    amount_cents: Mapped[int] = mapped_column(Integer, nullable=False)
+    currency: Mapped[str] = mapped_column(String(12), nullable=False, default="USD")
+    credits_to_grant: Mapped[int] = mapped_column(Integer, nullable=False)
+    creem_checkout_id: Mapped[str | None] = mapped_column(String(100), index=True)
+    creem_order_id: Mapped[str | None] = mapped_column(String(100), index=True)
+    metadata_json: Mapped[dict] = mapped_column("metadata", JSONB, default=dict)
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+
+class CreditLedgerEntry(Base):
+    __tablename__ = "credit_ledger_entries"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("billing_customers.id"), nullable=False, index=True)
+    checkout_id: Mapped[int | None] = mapped_column(ForeignKey("billing_checkouts.id"), index=True)
+    delta: Mapped[int] = mapped_column(Integer, nullable=False)
+    balance_after: Mapped[int] = mapped_column(Integer, nullable=False)
+    reason: Mapped[str] = mapped_column(String(50), nullable=False)
+    description: Mapped[str | None] = mapped_column(Text)
+    metadata_json: Mapped[dict] = mapped_column("metadata", JSONB, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class BillingWebhookEvent(Base):
+    __tablename__ = "billing_webhook_events"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    event_id: Mapped[str] = mapped_column(String(120), nullable=False, unique=True, index=True)
+    provider: Mapped[str] = mapped_column(String(30), default="creem")
+    event_type: Mapped[str] = mapped_column(String(80), nullable=False)
+    status: Mapped[str] = mapped_column(String(30), default="received", index=True)
+    error_message: Mapped[str | None] = mapped_column(Text)
+    payload: Mapped[dict] = mapped_column(JSONB, default=dict)
+    processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    primary_email: Mapped[str] = mapped_column(String(255), nullable=False)
+    email_normalized: Mapped[str] = mapped_column(String(255), nullable=False, unique=True, index=True)
+    email_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+    display_name: Mapped[str | None] = mapped_column(String(255))
+    photo_url: Mapped[str | None] = mapped_column(String(1024))
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class AuthIdentity(Base):
+    __tablename__ = "auth_identities"
+    __table_args__ = (
+        UniqueConstraint("provider", "provider_user_id", name="uq_auth_identities_provider_uid"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    provider: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    provider_user_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    email: Mapped[str | None] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class AuthSession(Base):
+    __tablename__ = "auth_sessions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    provider: Mapped[str | None] = mapped_column(String(64))
+    session_token_hash: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, index=True)
+    user_agent: Mapped[str | None] = mapped_column(String(512))
+    ip_address: Mapped[str | None] = mapped_column(String(64))
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class UserApp(Base):
+    __tablename__ = "user_apps"
+    __table_args__ = (
+        UniqueConstraint("user_id", "app_code", name="uq_user_apps_user_app"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    app_code: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
+    registered_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuthSession } from "@/components/AuthProvider";
 import { apiFetch, type SiteConfig } from "@/lib/api";
 import { captureEvent } from "@/lib/analytics";
 
 const NAV = [
   { href: "/", label: "首页" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/graph-v3", label: "关系图谱" },
   { href: "/chat", label: "角色对话" },
   { href: "/storyplay", label: "演绎" },
@@ -17,6 +19,7 @@ const NAV = [
 export default function Nav() {
   const pathname = usePathname();
   const [feedbackUrl, setFeedbackUrl] = useState<string | null>(null);
+  const { session, loading, logout } = useAuthSession();
 
   useEffect(() => {
     let cancelled = false;
@@ -83,6 +86,51 @@ export default function Nav() {
               反馈
             </a>
           ) : null}
+          {loading ? (
+            <span className="rounded-full border border-transparent px-3 py-1.5 text-sm text-white/40">
+              账户加载中
+            </span>
+          ) : session.authenticated && session.user ? (
+            <>
+              <Link
+                href="/auth"
+                onClick={() => {
+                  captureEvent("auth_entry_clicked", {
+                    source: "top_nav",
+                    state: "authenticated",
+                  });
+                }}
+                className="rounded-full border border-emerald-300/26 bg-emerald-300/18 px-3 py-1.5 text-sm text-white transition-colors hover:border-emerald-300/34 hover:bg-emerald-300/24"
+              >
+                {session.user.display_name || session.user.email}
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  captureEvent("auth_logout_clicked", {
+                    source: "top_nav",
+                  });
+                  void logout();
+                }}
+                className="rounded-full border border-transparent px-3 py-1.5 text-sm text-white/56 transition-colors hover:border-white/8 hover:bg-white/4 hover:text-white/90"
+              >
+                退出
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/auth"
+              onClick={() => {
+                captureEvent("auth_entry_clicked", {
+                  source: "top_nav",
+                  state: "anonymous",
+                });
+              }}
+              className="rounded-full border border-emerald-300/26 bg-emerald-300/18 px-3 py-1.5 text-sm text-white transition-colors hover:border-emerald-300/34 hover:bg-emerald-300/24"
+            >
+              登录
+            </Link>
+          )}
         </div>
       </div>
     </nav>

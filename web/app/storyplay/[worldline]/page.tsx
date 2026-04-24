@@ -435,7 +435,7 @@ function StoryplayInner() {
           <div className="mt-1 font-mono text-xs text-white/28">{worldlineId}</div>
           {canonDivergence && (
             <div className="mt-2 text-xs px-2 py-1 rounded bg-orange-900/30 border border-orange-700/30 text-orange-400">
-              ⚠️ 世界线已偏离原著
+              ⚠️ 世界线已偏离设定锚点
             </div>
           )}
         </div>
@@ -499,7 +499,7 @@ function StoryplayInner() {
                 <span className="text-[10px] text-white/28">{ch.content.length}字</span>
                 {ch.canon_divergence && (
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-900/30 text-orange-400 border border-orange-700/30">
-                    偏离原著
+                    偏离设定
                   </span>
                 )}
               </div>
@@ -562,7 +562,7 @@ function StoryplayInner() {
                   onClick={forceSubmit}
                   className="text-xs px-3 py-1.5 bg-orange-900/30 text-orange-400 border border-orange-700/30 rounded hover:bg-orange-900/50 transition-colors"
                 >
-                  强制继续（偏离原著）
+                  强制继续（偏离设定）
                 </button>
               </div>
             )}

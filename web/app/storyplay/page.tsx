@@ -212,7 +212,7 @@ export default function StoryplayEntryPage() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <div className="mb-10 text-center">
         <h1 className="mb-2 text-3xl font-semibold text-white/92">演绎模式</h1>
-        <p className="text-white/48">选择角色和时间窗口，在原著锚点之间创造你的故事</p>
+        <p className="text-white/48">选择角色和时间窗口，在既定时间锚点之间创造你的故事</p>
       </div>
 
       {/* Character Select */}
@@ -240,7 +240,7 @@ export default function StoryplayEntryPage() {
 
             <div className="amo-panel mt-3 rounded-2xl p-3">
               <div className="mb-2 text-xs text-white/58">
-                找不到角色时，可在这里兜底搜索原著人物
+                找不到角色时，可在这里兜底搜索已收录角色
               </div>
               <div className="flex gap-2">
                 <input
@@ -252,7 +252,7 @@ export default function StoryplayEntryPage() {
                       void handleFallbackSearch();
                     }
                   }}
-                  placeholder="输入角色名或别名，例如 墨大夫 / 南宫婉"
+                  placeholder="输入角色名或别名"
                   className="amo-input flex-1 rounded-xl px-3 py-2 text-sm"
                 />
                 <button

@@ -47,6 +47,39 @@ class Settings(BaseSettings):
     feedback_form_url: str | None = None
     posthog_public_key: str | None = None
     posthog_host: str = "https://us.i.posthog.com"
+    public_app_url: str = "http://localhost:3000"
+    support_email: str = "support@8xd.io"
+    app_code: str = "amo"
+
+    # Auth
+    auth_enabled: bool = True
+    auth_require_verified_email: bool = True
+    auth_session_secret: str = "dev-only-change-me"
+    auth_session_cookie_name: str = "amo_session"
+    auth_session_ttl_days: int = 30
+    auth_session_cookie_secure: bool = False
+    auth_session_cookie_domain: str | None = None
+    identity_platform_project_id: str | None = None
+    identity_platform_service_account_path: str | None = None
+    identity_platform_service_account_json: str | None = None
+
+    # Billing
+    billing_enabled: bool = True
+    billing_admin_key: str | None = None
+    billing_free_credits: int = 100
+    billing_pack_product_key: str = "chat-pack-100"
+    billing_pack_display_name: str = "100 extra dialogue credits"
+    billing_pack_description: str = "Top up 100 extra AMO dialogue credits for one-time purchase."
+    billing_pack_price_cents: int = 100
+    billing_pack_currency: str = "USD"
+    billing_pack_credit_amount: int = 100
+
+    # Creem
+    creem_mode: str = "local_mock"
+    creem_api_key: str | None = None
+    creem_product_id: str | None = None
+    creem_webhook_secret: str | None = None
+    creem_timeout_seconds: float = 20.0
 
     @field_validator("cors_origins", mode="before")
     @classmethod
@@ -73,6 +106,26 @@ class Settings(BaseSettings):
             if normalized in DEBUG_FALSE_VALUES:
                 return False
         return v
+
+    @property
+    def creem_base_url(self) -> str:
+        if self.creem_mode == "test":
+            return "https://test-api.creem.io/v1"
+        return "https://api.creem.io/v1"
+
+    @property
+    def billing_checkout_mode(self) -> str:
+        if (
+            self.creem_mode in {"test", "prod"}
+            and self.creem_api_key
+            and self.creem_product_id
+        ):
+            return self.creem_mode
+        return "local_mock"
+
+    @property
+    def auth_cookie_max_age_seconds(self) -> int:
+        return max(self.auth_session_ttl_days, 1) * 24 * 60 * 60
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

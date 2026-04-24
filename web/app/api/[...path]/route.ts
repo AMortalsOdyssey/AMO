@@ -43,16 +43,21 @@ async function proxyRequest(
   const url = `${API_BASE}/${path}${request.nextUrl.search}`;
 
   const headers = new Headers();
-
-  // 转发认证头
-  const authHeader = request.headers.get("Authorization");
-  if (authHeader) {
-    headers.set("Authorization", authHeader);
-  }
-
-  const acceptHeader = request.headers.get("Accept");
-  if (acceptHeader) {
-    headers.set("Accept", acceptHeader);
+  for (const [key, value] of request.headers.entries()) {
+    const normalized = key.toLowerCase();
+    if (normalized === "host" || normalized === "content-length" || normalized === "connection") {
+      continue;
+    }
+    if (
+      normalized === "authorization" ||
+      normalized === "accept" ||
+      normalized === "content-type" ||
+      normalized === "cookie" ||
+      normalized.startsWith("x-amo-") ||
+      normalized.startsWith("x-request-")
+    ) {
+      headers.set(key, value);
+    }
   }
 
   const init: RequestInit = {
@@ -73,35 +78,63 @@ async function proxyRequest(
 
   try {
     const response = await fetch(url, init);
-    const headers = new Headers();
+    const responseHeaders = new Headers();
     const contentType = response.headers.get("Content-Type");
     if (contentType) {
-      headers.set("Content-Type", contentType);
+      responseHeaders.set("Content-Type", contentType);
     }
     const xAccelBuffering = response.headers.get("X-Accel-Buffering");
     if (xAccelBuffering) {
-      headers.set("X-Accel-Buffering", xAccelBuffering);
+      responseHeaders.set("X-Accel-Buffering", xAccelBuffering);
     }
-    headers.set("Cache-Control", "no-store, max-age=0");
+    const setCookieHeaders =
+      typeof (response.headers as Headers & { getSetCookie?: () => string[] }).getSetCookie === "function"
+        ? (response.headers as Headers & { getSetCookie: () => string[] }).getSetCookie()
+        : [];
+    if (setCookieHeaders.length > 0) {
+      for (const setCookieHeader of setCookieHeaders) {
+        responseHeaders.append("Set-Cookie", setCookieHeader);
+      }
+    } else {
+      const singleSetCookieHeader = response.headers.get("set-cookie");
+      if (singleSetCookieHeader) {
+        responseHeaders.append("Set-Cookie", singleSetCookieHeader);
+      }
+    }
+    responseHeaders.set("Cache-Control", "no-store, max-age=0");
 
     const isSse = contentType?.startsWith("text/event-stream");
     if (isSse) {
-      headers.set("Cache-Control", "no-cache, no-store, max-age=0");
-      headers.set("Connection", "keep-alive");
-      headers.set("X-Accel-Buffering", "no");
+      responseHeaders.set("Cache-Control", "no-cache, no-store, max-age=0");
+      responseHeaders.set("Connection", "keep-alive");
+      responseHeaders.set("X-Accel-Buffering", "no");
       return new Response(response.body, {
         status: response.status,
-        headers,
+        headers: responseHeaders,
       });
     }
 
-    return NextResponse.json(
-      await response.json(),
-      {
+    if (response.status === 204) {
+      return new Response(null, {
         status: response.status,
-        headers,
-      }
-    );
+        headers: responseHeaders,
+      });
+    }
+
+    if (contentType?.includes("application/json")) {
+      return NextResponse.json(
+        await response.json(),
+        {
+          status: response.status,
+          headers: responseHeaders,
+        }
+      );
+    }
+
+    return new Response(await response.text(), {
+      status: response.status,
+      headers: responseHeaders,
+    });
   } catch (error) {
     console.error(`Proxy error: ${url}`, error);
     return NextResponse.json(

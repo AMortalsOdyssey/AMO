@@ -115,10 +115,10 @@ export default function Home() {
           A Mortal&apos;s Odyssey
         </div>
         <h1 className="amo-title-gradient mb-3 text-4xl font-semibold tracking-[0.14em] md:text-5xl">
-          AMO · 凡人修仙传
+          AMO · A Mortal&apos;s Odyssey
         </h1>
         <p className="mx-auto max-w-3xl text-lg text-white/62">
-          世界观数据库 · 关系图谱 · 角色对话 · 剧情演绎
+          资料索引 · 关系图谱 · 角色对话 · 交互演绎
         </p>
       </div>
 
@@ -135,7 +135,7 @@ export default function Home() {
                 <h2 className="text-2xl font-semibold text-white/92 text-balance">A Mortal&apos;s Odyssey</h2>
               </div>
               <p className="max-w-md text-sm leading-6 text-white/62">
-                AMO，取自 A Mortal&apos;s Odyssey，意为一个凡人的漫长远征。
+                AMO，取自 A Mortal&apos;s Odyssey，意指一段自凡俗视角出发、穿越漫长时间与未知边界的远征。
               </p>
             </div>
 
@@ -145,11 +145,11 @@ export default function Home() {
                 源自希腊史诗，指向一段漫长、艰险而近乎宿命的远征。
               </p>
               <p>
-                在这里，它所对应的并不只是韩立的修行之路，
-                更是他自人界至灵界、再至仙界，在无尽时间中独自穿越万重天地的长途跋涉。
+                在这里，它对应的是角色、势力与时间线在漫长修真叙事中的穿行、选择与代价，
+                也是一个世界在时间推进中不断展开的层层回响。
               </p>
               <p className="text-white/42">
-                AMO 所承载的，是一个凡人以岁月、孤独与意志写成的奥德赛。
+                AMO 所承载的，是一个围绕成长、因果与世界演化展开的长期故事空间。
               </p>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function Home() {
           className="amo-panel amo-panel-interactive block rounded-3xl p-6"
         >
           <div className="mb-2 text-xl font-semibold text-white/90">剧情演绎</div>
-          <div className="text-sm text-white/46">在原著锚点之间选择角色与时间窗口，展开平行故事</div>
+          <div className="text-sm text-white/46">在既定时间锚点之间选择角色与时间窗口，展开平行故事</div>
         </Link>
         <Link
           href="/timeline"
