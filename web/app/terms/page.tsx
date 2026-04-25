@@ -42,7 +42,17 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="mb-2 text-lg font-medium text-white/88">5. 协议更新</h2>
+            <h2 className="mb-2 text-lg font-medium text-white/88">5. 支付、额度与退款</h2>
+            <p>
+              AMO 提供的一次性购买项目为角色对话额度，不属于订阅服务，不会自动续费。购买前需要登录账号，支付完成后额度会补充到当前登录账号，可用于站内角色对话功能。每发送一条角色对话消息通常消耗 1 次额度；如生成失败，系统会尽量退回本次消耗。
+            </p>
+            <p className="mt-3">
+              支付流程由第三方支付服务商 Creem 安全处理，AMO 不直接保存你的银行卡或完整支付凭证。支付成功后如额度未及时到账，请通过站内反馈入口或支持邮箱联系我们，并提供订单相关信息以便核查。退款、拒付或支付争议将结合 Creem 的交易记录、支付服务商规则以及 AMO 的实际服务交付情况处理。
+            </p>
+          </section>
+
+          <section>
+            <h2 className="mb-2 text-lg font-medium text-white/88">6. 协议更新</h2>
             <p>
               我们可根据服务调整随时更新本协议。更新后的版本自发布之日起生效；你继续使用本站，视为接受更新后的条款。
             </p>

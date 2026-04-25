@@ -252,6 +252,14 @@ function PricingInner() {
                 : "支付通道即将开放"}
           </button>
 
+          <p className="mt-3 text-xs leading-5 text-white/42">
+            购买即表示同意
+            <Link href="/terms" className="text-emerald-200/80 hover:text-emerald-100">用户协议</Link>
+            与
+            <Link href="/privacy" className="text-emerald-200/80 hover:text-emerald-100">隐私协议</Link>
+            。支付由 Creem 安全处理。
+          </p>
+
           <div className="mt-4 flex flex-wrap gap-2 text-xs text-white/44">
             <span className="rounded-full border border-white/8 bg-white/4 px-3 py-1">
               一次性购买
