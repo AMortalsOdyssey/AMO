@@ -16,6 +16,7 @@ from app.schemas.responses import (
     BillingSummaryOut,
     BillingWebhookAckOut,
 )
+from app.services import auth as auth_service
 from app.services import billing as billing_service
 
 router = APIRouter(prefix="/billing", tags=["billing"])
@@ -41,13 +42,44 @@ def _build_catalog_response(
     )
 
 
+async def _resolve_billing_client(
+    *,
+    db: AsyncSession,
+    request: Request,
+    x_amo_client_token: str | None,
+    require_user: bool = False,
+) -> tuple[str, str | None]:
+    active_session = await auth_service.get_active_user_session(db, request)
+    if active_session is not None:
+        return (
+            billing_service.build_authenticated_client_token(active_session.user.id),
+            active_session.user.primary_email,
+        )
+
+    if require_user:
+        raise HTTPException(
+            status_code=401,
+            detail={
+                "code": "login_required",
+                "message": "Please sign in before purchasing AMO credits.",
+            },
+        )
+
+    return billing_service.require_client_token(x_amo_client_token), None
+
+
 @router.get("/catalog", response_model=BillingCatalogOut)
 async def get_catalog(
+    request: Request,
     x_amo_client_token: str | None = Header(default=None, alias="X-AMO-Client-Token"),
     db: AsyncSession = Depends(get_pg),
 ):
     try:
-        client_token = billing_service.require_client_token(x_amo_client_token)
+        client_token, _ = await _resolve_billing_client(
+            db=db,
+            request=request,
+            x_amo_client_token=x_amo_client_token,
+        )
         product = await billing_service.get_product(db)
         summary = await billing_service.get_billing_summary(db, client_token)
         await db.commit()
@@ -62,11 +94,16 @@ async def get_catalog(
 
 @router.get("/me", response_model=BillingSummaryOut)
 async def get_me(
+    request: Request,
     x_amo_client_token: str | None = Header(default=None, alias="X-AMO-Client-Token"),
     db: AsyncSession = Depends(get_pg),
 ):
     try:
-        client_token = billing_service.require_client_token(x_amo_client_token)
+        client_token, _ = await _resolve_billing_client(
+            db=db,
+            request=request,
+            x_amo_client_token=x_amo_client_token,
+        )
         summary = await billing_service.get_billing_summary(db, client_token)
         await db.commit()
         return BillingSummaryOut(**summary.to_dict())
@@ -77,13 +114,19 @@ async def get_me(
 
 @router.post("/checkouts", response_model=BillingCheckoutOut)
 async def create_checkout(
+    request: Request,
     body: BillingCheckoutCreateRequest,
     x_amo_client_token: str | None = Header(default=None, alias="X-AMO-Client-Token"),
     db: AsyncSession = Depends(get_pg),
 ):
     try:
-        client_token = billing_service.require_client_token(x_amo_client_token)
-        checkout = await billing_service.create_checkout(db, client_token, email=body.email)
+        client_token, account_email = await _resolve_billing_client(
+            db=db,
+            request=request,
+            x_amo_client_token=x_amo_client_token,
+            require_user=True,
+        )
+        checkout = await billing_service.create_checkout(db, client_token, email=account_email or body.email)
         await db.commit()
         return BillingCheckoutOut(**billing_service.serialize_checkout(checkout))
     except billing_service.BillingError as exc:
@@ -93,12 +136,18 @@ async def create_checkout(
 
 @router.get("/checkouts/{request_id}", response_model=BillingCheckoutDetailOut)
 async def get_checkout(
+    request: Request,
     request_id: str,
     x_amo_client_token: str | None = Header(default=None, alias="X-AMO-Client-Token"),
     db: AsyncSession = Depends(get_pg),
 ):
     try:
-        client_token = billing_service.require_client_token(x_amo_client_token)
+        client_token, _ = await _resolve_billing_client(
+            db=db,
+            request=request,
+            x_amo_client_token=x_amo_client_token,
+            require_user=True,
+        )
         checkout = await billing_service.get_checkout_for_client(db, client_token, request_id)
         summary = await billing_service.get_billing_summary(db, client_token)
         await db.commit()
@@ -113,13 +162,19 @@ async def get_checkout(
 
 @router.post("/checkouts/{request_id}/mock-complete", response_model=BillingCheckoutDetailOut)
 async def complete_mock_checkout(
+    request: Request,
     request_id: str,
     body: BillingMockCompleteRequest,
     x_amo_client_token: str | None = Header(default=None, alias="X-AMO-Client-Token"),
     db: AsyncSession = Depends(get_pg),
 ):
     try:
-        client_token = billing_service.require_client_token(x_amo_client_token)
+        client_token, _ = await _resolve_billing_client(
+            db=db,
+            request=request,
+            x_amo_client_token=x_amo_client_token,
+            require_user=True,
+        )
         checkout, summary = await billing_service.complete_mock_checkout(
             db,
             client_token,

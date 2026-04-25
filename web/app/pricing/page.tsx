@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import {
   apiFetch,
@@ -10,6 +10,7 @@ import {
   type BillingCheckoutDetail,
 } from "@/lib/api";
 import { captureEvent } from "@/lib/analytics";
+import { useAuthSession } from "@/components/AuthProvider";
 
 function formatPrice(cents: number, currency: string) {
   return new Intl.NumberFormat("en-US", {
@@ -20,7 +21,9 @@ function formatPrice(cents: number, currency: string) {
 }
 
 function PricingInner() {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const { session, loading: authLoading } = useAuthSession();
   const [catalog, setCatalog] = useState<BillingCatalog | null>(null);
   const [checkoutDetail, setCheckoutDetail] = useState<BillingCheckoutDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -86,10 +89,15 @@ function PricingInner() {
   const currentSummary = checkoutDetail?.summary || catalog?.summary || null;
   const pack = catalog?.pack;
   const paymentsReady = Boolean(pack?.is_active && catalog && catalog.mode !== "local_mock");
+  const canStartCheckout = paymentsReady && !authLoading;
 
   const startCheckout = async () => {
     if (!paymentsReady) {
       setError("支付通道即将开放。你仍然可以继续使用当前免费额度。");
+      return;
+    }
+    if (!session.authenticated) {
+      router.push(`/auth?next=${encodeURIComponent("/pricing")}`);
       return;
     }
 
@@ -199,7 +207,7 @@ function PricingInner() {
             <div className="mt-1 text-xs uppercase tracking-[0.22em] text-white/34">Free Dialogue Credits</div>
           </div>
           <p className="mt-4 text-xs leading-6 text-white/44">
-            不登录也可以使用免费额度；登录账号是可选能力，不影响当前浏览器继续体验。
+            不登录也可以使用免费额度；购买额度需要先登录账号，便于额度到账和后续找回。
           </p>
         </section>
 
@@ -224,18 +232,22 @@ function PricingInner() {
           </div>
 
           <p className="mt-4 text-sm leading-6 text-white/64">
-            一次性购买，支付完成后立即补充对话额度。不会自动续费，也不包含订阅。
+            一次性购买，支付完成后立即补充到当前登录账号。不会自动续费，也不包含订阅。
           </p>
 
           <button
             type="button"
             onClick={startCheckout}
-            disabled={creatingCheckout || !paymentsReady}
+            disabled={creatingCheckout || !canStartCheckout}
             className="amo-button-primary mt-6 w-full rounded-2xl py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
           >
             {creatingCheckout
               ? "正在前往支付..."
-              : paymentsReady
+              : authLoading
+                ? "正在检查登录状态..."
+                : !session.authenticated
+                  ? "登录后购买"
+                  : paymentsReady
                 ? "购买对话额度"
                 : "支付通道即将开放"}
           </button>
@@ -258,7 +270,7 @@ function PricingInner() {
               每发送一条角色对话消息，消耗 1 次对话额度。
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/4 p-4">
-              额度会记录在当前浏览器中。清理浏览器数据可能会影响匿名额度记录。
+              免费额度可匿名使用；购买额度会绑定到登录账号，方便后续继续使用。
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/4 p-4">
               如遇支付或额度到账问题，请联系 {catalog?.support_email || "support@8xd.io"}。
@@ -280,7 +292,7 @@ function PricingInner() {
           <div className="text-xs uppercase tracking-[0.22em] text-white/38">Account</div>
           <div className="mt-4 space-y-3 text-sm leading-6 text-white/64">
             <p>
-              不登录也可以直接使用 AMO。登录后，后续可逐步支持更稳定的账号绑定和跨设备体验。
+              不登录也可以直接使用 AMO 的免费额度。支付前需要登录，支付记录和购买额度会归到当前账号。
             </p>
             <p>
               想立即体验，可以直接前往 <Link href="/chat" className="text-emerald-200 hover:text-emerald-100">角色对话</Link>。

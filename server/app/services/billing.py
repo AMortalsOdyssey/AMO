@@ -57,6 +57,17 @@ def require_client_token(client_token: str | None) -> str:
     return normalized
 
 
+def build_authenticated_client_token(user_id: str) -> str:
+    normalized = str(user_id or "").strip()
+    if not normalized:
+        raise BillingError(
+            "Missing AMO user id.",
+            code="missing_user_id",
+            status_code=401,
+        )
+    return require_client_token(f"user:{normalized}")
+
+
 def require_admin_key(admin_key: str | None) -> None:
     expected = (settings.billing_admin_key or "").strip()
     if not expected or expected != (admin_key or "").strip():

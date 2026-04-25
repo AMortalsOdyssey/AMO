@@ -3,6 +3,8 @@ import unittest
 from hashlib import sha256
 
 from app.services.billing import (
+    BillingError,
+    build_authenticated_client_token,
     build_mock_checkout_url,
     calculate_refunded_credits,
     extract_refund_lookup,
@@ -24,6 +26,17 @@ class BillingServiceTests(unittest.TestCase):
 
         self.assertIn("/pricing", url)
         self.assertIn("mock_checkout_request_id=amochk_demo", url)
+
+    def test_authenticated_client_token_uses_user_namespace(self):
+        token = build_authenticated_client_token("user-123")
+
+        self.assertEqual(token, "user:user-123")
+
+    def test_authenticated_client_token_rejects_empty_user_id(self):
+        with self.assertRaises(BillingError) as ctx:
+            build_authenticated_client_token(" ")
+
+        self.assertEqual(ctx.exception.code, "missing_user_id")
 
     def test_extract_refund_lookup_reads_transaction_order(self):
         lookup = extract_refund_lookup(

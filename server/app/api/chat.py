@@ -3,7 +3,7 @@ import logging
 from collections.abc import AsyncGenerator
 
 import httpx
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sse_starlette.sse import EventSourceResponse
@@ -12,6 +12,7 @@ from app.core.config import settings
 from app.db.connections import async_session, get_milvus, get_pg
 from app.models.tables import Character, CharacterSnapshot
 from app.schemas.responses import ChatRequest
+from app.services import auth as auth_service
 from app.services import billing as billing_service
 from app.services.embeddings import get_embedding_vector
 
@@ -201,6 +202,7 @@ async def _stream_llm(
 
 @router.post("")
 async def chat(
+    request: Request,
     req: ChatRequest,
     x_amo_client_token: str | None = Header(default=None, alias="X-AMO-Client-Token"),
     db: AsyncSession = Depends(get_pg),
@@ -273,7 +275,12 @@ async def chat(
     )
 
     try:
-        client_token = billing_service.require_client_token(x_amo_client_token)
+        active_session = await auth_service.get_active_user_session(db, request)
+        client_token = (
+            billing_service.build_authenticated_client_token(active_session.user.id)
+            if active_session is not None
+            else billing_service.require_client_token(x_amo_client_token)
+        )
     except billing_service.BillingError as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.to_detail()) from exc
 
