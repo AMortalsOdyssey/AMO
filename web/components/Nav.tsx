@@ -128,7 +128,7 @@ export default function Nav() {
               }}
               className="rounded-full border border-emerald-300/26 bg-emerald-300/18 px-3 py-1.5 text-sm text-white transition-colors hover:border-emerald-300/34 hover:bg-emerald-300/24"
             >
-              登录
+              账户
             </Link>
           )}
         </div>

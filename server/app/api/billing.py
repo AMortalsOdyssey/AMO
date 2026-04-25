@@ -189,6 +189,15 @@ async def creem_webhook(
                 provider="creem",
             )
             status = "processed"
+        elif event_type == "refund.created":
+            await billing_service.process_refund_created(
+                db,
+                event_id=event_id,
+                event_type=event_type,
+                payload=payload,
+                provider="creem",
+            )
+            status = "processed"
         else:
             log.info("ignored creem event type=%s", event_type)
         await db.commit()

@@ -74,6 +74,90 @@ def verify_creem_signature(payload: bytes, signature: str | None, secret: str | 
     return hmac.compare_digest(signature.strip(), expected)
 
 
+def _as_positive_int(value: Any) -> int | None:
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        return None
+    return parsed if parsed > 0 else None
+
+
+def _object_id(value: Any) -> str | None:
+    if isinstance(value, dict):
+        raw = value.get("id")
+    else:
+        raw = value
+    if raw is None:
+        return None
+    normalized = str(raw).strip()
+    return normalized or None
+
+
+def extract_refund_lookup(payload: dict[str, Any]) -> dict[str, Any]:
+    object_data = payload.get("object") if isinstance(payload.get("object"), dict) else {}
+    transaction = object_data.get("transaction") if isinstance(object_data.get("transaction"), dict) else {}
+    metadata = object_data.get("metadata") if isinstance(object_data.get("metadata"), dict) else {}
+    transaction_metadata = transaction.get("metadata") if isinstance(transaction.get("metadata"), dict) else {}
+
+    order_ref = object_data.get("order") or transaction.get("order")
+    checkout_ref = object_data.get("checkout") or transaction.get("checkout")
+
+    return {
+        "refund_id": _object_id(object_data.get("id")),
+        "request_id": _object_id(
+            object_data.get("request_id")
+            or transaction.get("request_id")
+            or metadata.get("request_id")
+            or transaction_metadata.get("request_id")
+        ),
+        "checkout_id": _object_id(object_data.get("checkout_id") or transaction.get("checkout_id") or checkout_ref),
+        "order_id": _object_id(object_data.get("order_id") or transaction.get("order_id") or order_ref),
+        "refund_amount_cents": _as_positive_int(
+            object_data.get("refund_amount") or object_data.get("amount") or object_data.get("amount_refunded")
+        ),
+        "transaction_amount_cents": _as_positive_int(transaction.get("amount")),
+        "transaction_amount_paid_cents": _as_positive_int(transaction.get("amount_paid")),
+        "transaction_status": str(transaction.get("status") or object_data.get("status") or "").strip(),
+    }
+
+
+def calculate_refunded_credits(
+    *,
+    checkout_amount_cents: int,
+    credits_to_grant: int,
+    refund_amount_cents: int | None = None,
+    transaction_amount_cents: int | None = None,
+    transaction_amount_paid_cents: int | None = None,
+    transaction_status: str | None = None,
+) -> int:
+    if credits_to_grant <= 0:
+        return 0
+
+    basis = next(
+        (
+            value
+            for value in (
+                transaction_amount_paid_cents,
+                transaction_amount_cents,
+                checkout_amount_cents,
+            )
+            if value and value > 0
+        ),
+        None,
+    )
+
+    normalized_status = (transaction_status or "").strip().lower()
+    if normalized_status == "refunded":
+        return credits_to_grant
+    if not refund_amount_cents or not basis:
+        return credits_to_grant
+    if refund_amount_cents >= basis:
+        return credits_to_grant
+
+    ratio = max(0.0, min(refund_amount_cents / basis, 1.0))
+    return min(credits_to_grant, max(1, round(credits_to_grant * ratio)))
+
+
 def build_public_url(path: str, **query: str) -> str:
     base = settings.public_app_url.rstrip("/")
     suffix = f"?{urlencode(query)}" if query else ""
@@ -128,6 +212,22 @@ async def ensure_default_product(db: AsyncSession) -> BillingProduct:
     stmt = select(BillingProduct).where(BillingProduct.product_key == settings.billing_pack_product_key)
     product = (await db.execute(stmt)).scalar_one_or_none()
     if product:
+        desired_fields = {
+            "display_name": settings.billing_pack_display_name,
+            "description": settings.billing_pack_description,
+            "price_cents": settings.billing_pack_price_cents,
+            "currency": settings.billing_pack_currency.upper(),
+            "credits_per_unit": settings.billing_pack_credit_amount,
+            "creem_product_id": settings.creem_product_id,
+            "is_active": True,
+        }
+        changed = False
+        for field_name, desired_value in desired_fields.items():
+            if desired_value is not None and getattr(product, field_name) != desired_value:
+                setattr(product, field_name, desired_value)
+                changed = True
+        if changed:
+            await db.flush()
         return product
 
     product = BillingProduct(
@@ -565,6 +665,120 @@ async def process_checkout_completed(
             checkout=checkout,
             metadata={"event_id": event_id, "provider": provider},
         )
+
+    event.status = "processed"
+    event.processed_at = datetime.now(UTC)
+    event.error_message = None
+    await db.flush()
+    return _build_summary(customer)
+
+
+async def process_refund_created(
+    db: AsyncSession,
+    *,
+    event_id: str,
+    event_type: str,
+    payload: dict[str, Any],
+    provider: str = "creem",
+) -> BillingSummary:
+    event = await get_or_create_webhook_event(
+        db,
+        event_id=event_id,
+        event_type=event_type,
+        payload=payload,
+        provider=provider,
+    )
+
+    lookup = extract_refund_lookup(payload)
+    if not any(lookup.get(key) for key in ("request_id", "order_id", "checkout_id")):
+        event.status = "failed"
+        event.error_message = "Missing checkout reference in refund.created payload."
+        await db.flush()
+        raise BillingError(
+            "Refund webhook payload did not include a checkout reference.",
+            code="invalid_refund_payload",
+            status_code=400,
+        )
+
+    checkout_stmt = select(BillingCheckout).with_for_update()
+    if lookup.get("request_id"):
+        checkout_stmt = checkout_stmt.where(BillingCheckout.request_id == lookup["request_id"])
+    elif lookup.get("order_id"):
+        checkout_stmt = checkout_stmt.where(BillingCheckout.creem_order_id == lookup["order_id"])
+    else:
+        checkout_stmt = checkout_stmt.where(BillingCheckout.creem_checkout_id == lookup["checkout_id"])
+
+    checkout = (await db.execute(checkout_stmt)).scalar_one_or_none()
+    if checkout is None:
+        event.status = "failed"
+        event.error_message = f"Unknown refund reference: {lookup}"
+        await db.flush()
+        raise BillingError(
+            "Refund event could not be matched to a local checkout.",
+            code="unknown_refund_checkout",
+            status_code=404,
+        )
+
+    customer_stmt = (
+        select(BillingCustomer)
+        .where(BillingCustomer.id == checkout.customer_id)
+        .with_for_update()
+    )
+    customer = (await db.execute(customer_stmt)).scalar_one()
+
+    if event.status == "processed":
+        return _build_summary(customer)
+
+    metadata = dict(checkout.metadata_json or {})
+    refunds = list(metadata.get("refunds") or [])
+    already_refunded_credits = sum(int(item.get("credits_requested_to_revoke") or 0) for item in refunds)
+    refundable_credits = max(checkout.credits_to_grant - already_refunded_credits, 0)
+    calculated_credits = calculate_refunded_credits(
+        checkout_amount_cents=checkout.amount_cents,
+        credits_to_grant=checkout.credits_to_grant,
+        refund_amount_cents=lookup.get("refund_amount_cents"),
+        transaction_amount_cents=lookup.get("transaction_amount_cents"),
+        transaction_amount_paid_cents=lookup.get("transaction_amount_paid_cents"),
+        transaction_status=lookup.get("transaction_status"),
+    )
+    credits_to_revoke = min(calculated_credits, refundable_credits)
+    balance_delta = -min(customer.credit_balance, credits_to_revoke)
+
+    if credits_to_revoke > 0:
+        customer.credit_balance += balance_delta
+        customer.paid_credits_granted = max(customer.paid_credits_granted - credits_to_revoke, 0)
+
+        db.add(
+            CreditLedgerEntry(
+                customer_id=customer.id,
+                checkout_id=checkout.id,
+                delta=balance_delta,
+                balance_after=customer.credit_balance,
+                reason="checkout_refunded",
+                description="Revoked dialogue credits after Creem refund.",
+                metadata_json={
+                    "event_id": event_id,
+                    "provider": provider,
+                    "refund_id": lookup.get("refund_id"),
+                    "refund_amount_cents": lookup.get("refund_amount_cents"),
+                    "credits_requested_to_revoke": credits_to_revoke,
+                },
+            )
+        )
+
+    total_refunded_credits = already_refunded_credits + credits_to_revoke
+    checkout.status = "refunded" if total_refunded_credits >= checkout.credits_to_grant else "partially_refunded"
+    refunds.append(
+        {
+            "event_id": event_id,
+            "refund_id": lookup.get("refund_id"),
+            "refund_amount_cents": lookup.get("refund_amount_cents"),
+            "credits_requested_to_revoke": credits_to_revoke,
+            "balance_delta": balance_delta,
+            "processed_at": datetime.now(UTC).isoformat(),
+        }
+    )
+    checkout.metadata_json = {**metadata, "refunds": refunds, "last_refund_payload": payload.get("object", {})}
 
     event.status = "processed"
     event.processed_at = datetime.now(UTC)

@@ -280,7 +280,7 @@ function ChatInner() {
               免费剩余 {billingSummary?.free_credits_remaining ?? "..."} · 累计已用 {billingSummary?.used_credits ?? "..."}
             </div>
             <div className="mt-3 text-xs leading-5 text-white/52">
-              首次进入送 100 次，对话额度不足时可在 Pricing 购买 100 次 / $1。
+              匿名可直接使用。首次进入送 100 次，对话额度不足时可在 Pricing 购买 1000 次 / $1。
             </div>
             <Link
               href="/pricing"

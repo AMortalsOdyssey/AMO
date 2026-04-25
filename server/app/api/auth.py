@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.db.connections import get_pg
 from app.schemas.responses import AuthSessionCreateRequest, AuthSessionOut, AuthUserOut
 from app.services import auth as auth_service
@@ -10,6 +11,22 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 def _raise_auth_error(exc: auth_service.AuthError) -> None:
     raise HTTPException(status_code=exc.status_code, detail=exc.to_detail())
+
+
+@router.get("/config")
+async def get_auth_config():
+    return {
+        "enabled": bool(
+            settings.identity_platform_web_api_key
+            and settings.identity_platform_auth_domain
+            and settings.identity_platform_project_id
+        ),
+        "apiKey": settings.identity_platform_web_api_key or "",
+        "authDomain": settings.identity_platform_auth_domain or "",
+        "projectId": settings.identity_platform_project_id or "",
+        "appId": settings.identity_platform_app_id or None,
+        "messagingSenderId": settings.identity_platform_messaging_sender_id or None,
+    }
 
 
 @router.get("/session", response_model=AuthSessionOut)

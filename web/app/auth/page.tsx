@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
+  getRedirectResult,
   sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   type ActionCodeSettings,
 } from "firebase/auth";
@@ -44,6 +46,8 @@ function resolveAuthErrorMessage(error: unknown) {
       return "邮箱或密码不正确。";
     case "auth/popup-closed-by-user":
       return "Google 登录窗口已关闭，请重试。";
+    case "auth/popup-blocked":
+      return "浏览器拦截了 Google 登录窗口，请重试或允许弹窗。";
     case "auth/too-many-requests":
       return "尝试次数过多，请稍后再试。";
     default:
@@ -77,14 +81,14 @@ function AuthPageInner() {
   const nextPath = sanitizeNextPath(searchParams.get("next"));
   const verifiedMessage = searchParams.get("verified");
 
-  const exchangeIdentityToken = async (idToken: string) => {
+  const exchangeIdentityToken = useCallback(async (idToken: string) => {
     return apiFetch<AuthSession>("/auth/session", {
       method: "POST",
       body: JSON.stringify({ id_token: idToken }),
     });
-  };
+  }, []);
 
-  const finalizeIdentityPlatformLogin = async () => {
+  const finalizeIdentityPlatformLogin = useCallback(async () => {
     const auth = await getIdentityPlatformAuth();
     const user = auth.currentUser;
     if (!user) {
@@ -102,7 +106,52 @@ function AuthPageInner() {
     await signOut(auth);
     await refreshSession();
     router.replace(nextPath);
-  };
+  }, [exchangeIdentityToken, nextPath, refreshSession, router]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const finishRedirectLogin = async () => {
+      try {
+        const auth = await getIdentityPlatformAuth();
+        const result = await getRedirectResult(auth);
+        if (!result || cancelled) {
+          return;
+        }
+
+        setSubmitting(true);
+        await finalizeIdentityPlatformLogin();
+        captureEvent("auth_google_login_completed", {
+          destination: nextPath,
+          flow: "redirect",
+        });
+      } catch (error) {
+        if (!cancelled) {
+          setErrorMessage(resolveAuthErrorMessage(error));
+          captureEvent("auth_google_login_failed", {
+            destination: nextPath,
+            flow: "redirect",
+          });
+        }
+        try {
+          const auth = await getIdentityPlatformAuth();
+          await signOut(auth);
+        } catch {
+          // noop
+        }
+      } finally {
+        if (!cancelled) {
+          setSubmitting(false);
+        }
+      }
+    };
+
+    void finishRedirectLogin();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [finalizeIdentityPlatformLogin, nextPath]);
 
   const handleGoogleLogin = async () => {
     setSubmitting(true);
@@ -119,11 +168,28 @@ function AuthPageInner() {
       await finalizeIdentityPlatformLogin();
       captureEvent("auth_google_login_completed", {
         destination: nextPath,
+        flow: "popup",
       });
     } catch (error) {
-      setErrorMessage(resolveAuthErrorMessage(error));
+      const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
+      if (code === "auth/popup-blocked") {
+        try {
+          const auth = await getIdentityPlatformAuth();
+          setSuccessMessage("正在跳转到 Google 登录...");
+          captureEvent("auth_google_login_popup_blocked", {
+            destination: nextPath,
+          });
+          await signInWithRedirect(auth, createGoogleProvider());
+          return;
+        } catch (redirectError) {
+          setErrorMessage(resolveAuthErrorMessage(redirectError));
+        }
+      } else {
+        setErrorMessage(resolveAuthErrorMessage(error));
+      }
       captureEvent("auth_google_login_failed", {
         destination: nextPath,
+        flow: code === "auth/popup-blocked" ? "redirect_fallback" : "popup",
       });
       try {
         const auth = await getIdentityPlatformAuth();
@@ -224,24 +290,47 @@ function AuthPageInner() {
   };
 
   return (
-    <div className="relative mx-auto max-w-5xl px-4 py-12">
+    <div className="relative mx-auto flex min-h-[calc(100vh-8rem)] max-w-xl items-center px-4 py-12">
       <div className="pointer-events-none absolute left-[-4rem] top-8 h-48 w-48 rounded-full bg-white/5 blur-3xl" />
       <div className="pointer-events-none absolute right-[-3rem] top-24 h-44 w-44 rounded-full bg-emerald-200/8 blur-3xl" />
 
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-8 text-center">
-          <div className="mb-3 inline-flex rounded-full border border-white/8 bg-white/4 px-4 py-1 text-[11px] uppercase tracking-[0.3em] text-white/52">
-            Identity Platform
-          </div>
-          <h1 className="amo-title-gradient text-4xl font-semibold tracking-[0.14em] md:text-5xl">
-            登录 AMO
+      <div className="w-full">
+        <div className="mb-7 text-center">
+          <h1 className="amo-title-gradient text-4xl font-semibold tracking-[0.12em] md:text-5xl">
+            AMO 账户
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/58 md:text-base">
-            支持 Google 登录，以及邮箱密码注册登录。邮箱注册后需要先完成验证邮件确认，后端才会发放正式的 HttpOnly 会话。
+          <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-white/58">
+            使用 Google 或邮箱登录；也可以暂不登录继续体验 AMO。
           </p>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        {session.authenticated && session.user ? (
+          <section className="amo-panel rounded-[2rem] p-6 md:p-7">
+            <div className="rounded-2xl border border-emerald-300/18 bg-emerald-300/10 px-4 py-4 text-center">
+              <div className="text-xs uppercase tracking-[0.22em] text-emerald-100/70">Signed In</div>
+              <div className="mt-3 text-lg font-medium text-white">
+                {session.user.display_name || session.user.email}
+              </div>
+              <div className="mt-1 text-sm text-white/58">{session.user.email}</div>
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <Link
+                href={nextPath}
+                className="rounded-2xl bg-emerald-300/18 px-4 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-300/24"
+              >
+                返回应用
+              </Link>
+              <button
+                type="button"
+                onClick={() => void logout()}
+                className="rounded-2xl border border-white/10 px-4 py-3 text-sm text-white/70 transition-colors hover:border-white/16 hover:bg-white/4 hover:text-white"
+              >
+                退出登录
+              </button>
+            </div>
+          </section>
+        ) : (
           <section className="amo-panel rounded-[2rem] p-6 md:p-7">
             <div className="flex items-center gap-2 rounded-full border border-white/8 bg-white/4 p-1">
               <button
@@ -357,74 +446,15 @@ function AuthPageInner() {
                   邮箱验证流程已返回 AMO。现在可以直接用邮箱密码登录。
                 </div>
               ) : null}
+
+              <div className="pt-1 text-center">
+                <Link href={nextPath} className="text-sm text-white/48 transition-colors hover:text-white/80">
+                  暂不登录，继续使用 AMO
+                </Link>
+              </div>
             </div>
           </section>
-
-          <section className="amo-panel rounded-[2rem] p-6 md:p-7">
-            <h2 className="text-xl font-semibold text-white/92">当前账户状态</h2>
-            <p className="mt-3 text-sm leading-6 text-white/58">
-              AMO 的正式登录态由后端 session cookie 承担。Identity Platform 只负责认证和邮箱验证，未验证邮箱不会换发正式 session。
-            </p>
-
-            {session.authenticated && session.user ? (
-              <div className="mt-6 space-y-3 text-sm text-white/76">
-                <div className="rounded-2xl border border-emerald-300/18 bg-emerald-300/10 px-4 py-3">
-                  <div className="text-xs uppercase tracking-[0.22em] text-emerald-100/70">Signed In</div>
-                  <div className="mt-2 text-base font-medium text-white">{session.user.display_name || session.user.email}</div>
-                  <div className="mt-1 text-white/58">{session.user.email}</div>
-                  <div className="mt-2 text-white/48">
-                    Providers: {session.user.providers.join(", ") || "unknown"}
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-white/8 bg-white/4 px-4 py-3 text-white/64">
-                  Session Expires: {session.session_expires_at || "unknown"}
-                </div>
-
-                <div className="flex flex-wrap gap-3">
-                  <Link
-                    href={nextPath}
-                    className="rounded-2xl bg-emerald-300/18 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-emerald-300/24"
-                  >
-                    返回应用
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => void logout()}
-                    className="rounded-2xl border border-white/10 px-4 py-3 text-sm text-white/70 transition-colors hover:border-white/16 hover:bg-white/4 hover:text-white"
-                  >
-                    退出登录
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="mt-6 space-y-4 text-sm leading-6 text-white/62">
-                <div className="rounded-2xl border border-white/8 bg-white/4 px-4 py-4">
-                  <div className="font-medium text-white/90">邮箱注册流程</div>
-                  <div className="mt-2">
-                    1. 注册成功后，Identity Platform 会发官方验证邮件。
-                    <br />
-                    2. 用户点邮件里的链接完成验证。
-                    <br />
-                    3. 用户返回 AMO，用邮箱密码登录。
-                    <br />
-                    4. 后端校验 token，确认 `email_verified=true` 后才签发 HttpOnly session cookie。
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-white/8 bg-white/4 px-4 py-4">
-                  <div className="font-medium text-white/90">Google 登录流程</div>
-                  <div className="mt-2">
-                    1. 前端使用 Identity Platform 弹出 Google 登录。
-                    <br />
-                    2. 前端拿到 ID token。
-                    <br />
-                    3. 后端校验 token 并创建 AMO 本地会话。
-                  </div>
-                </div>
-              </div>
-            )}
-          </section>
-        </div>
+        )}
       </div>
     </div>
   );

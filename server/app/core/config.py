@@ -60,6 +60,10 @@ class Settings(BaseSettings):
     auth_session_cookie_secure: bool = False
     auth_session_cookie_domain: str | None = None
     identity_platform_project_id: str | None = None
+    identity_platform_web_api_key: str | None = None
+    identity_platform_auth_domain: str | None = None
+    identity_platform_app_id: str | None = None
+    identity_platform_messaging_sender_id: str | None = None
     identity_platform_service_account_path: str | None = None
     identity_platform_service_account_json: str | None = None
 
@@ -67,12 +71,12 @@ class Settings(BaseSettings):
     billing_enabled: bool = True
     billing_admin_key: str | None = None
     billing_free_credits: int = 100
-    billing_pack_product_key: str = "chat-pack-100"
-    billing_pack_display_name: str = "100 extra dialogue credits"
-    billing_pack_description: str = "Top up 100 extra AMO dialogue credits for one-time purchase."
+    billing_pack_product_key: str = "chat-pack-1000"
+    billing_pack_display_name: str = "AMO 1000 Dialogue Credits"
+    billing_pack_description: str = "Top up 1000 extra AMO dialogue credits for one-time purchase."
     billing_pack_price_cents: int = 100
     billing_pack_currency: str = "USD"
-    billing_pack_credit_amount: int = 100
+    billing_pack_credit_amount: int = 1000
 
     # Creem
     creem_mode: str = "local_mock"
