@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiFetch, type SiteConfig } from "@/lib/api";
 import { captureEvent } from "@/lib/analytics";
+import { SITE_DOMAIN, SUPPORT_EMAIL, SUPPORT_EMAIL_HREF } from "@/lib/site";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -33,9 +34,35 @@ export default function SiteFooter() {
   return (
     <footer className="relative border-t border-white/8 bg-black/18 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-8 text-sm text-white/48 md:flex-row md:items-end md:justify-between">
-        <p className="text-xs text-white/30">© {CURRENT_YEAR} amo.8xd.io. All rights reserved.</p>
+        <div className="space-y-2">
+          <p className="text-xs text-white/30">© {CURRENT_YEAR} {SITE_DOMAIN}. All rights reserved.</p>
+          <a
+            href={SUPPORT_EMAIL_HREF}
+            onClick={() => {
+              captureEvent("support_email_clicked", {
+                source: "footer",
+              });
+            }}
+            className="inline-flex text-xs text-white/46 transition-colors hover:text-emerald-100"
+          >
+            Support: {SUPPORT_EMAIL}
+          </a>
+        </div>
 
         <div className="flex flex-wrap gap-2 md:justify-end">
+          <Link
+            href="/contact"
+            onClick={() => {
+              captureEvent("contact_link_clicked", {
+                href: "/contact",
+                label: "联系方式",
+                source: "footer",
+              });
+            }}
+            className="rounded-full border border-white/8 px-3 py-1.5 text-white/56 transition-colors hover:border-white/14 hover:bg-white/4 hover:text-white/90"
+          >
+            联系方式
+          </Link>
           <Link
             href="/terms"
             onClick={() => {

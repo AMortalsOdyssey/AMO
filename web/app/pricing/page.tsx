@@ -11,6 +11,7 @@ import {
 } from "@/lib/api";
 import { captureEvent } from "@/lib/analytics";
 import { useAuthSession } from "@/components/AuthProvider";
+import { SUPPORT_EMAIL, SUPPORT_EMAIL_HREF } from "@/lib/site";
 
 function formatPrice(cents: number, currency: string) {
   return new Intl.NumberFormat("en-US", {
@@ -281,7 +282,11 @@ function PricingInner() {
               免费额度可匿名使用；购买额度会绑定到登录账号，方便后续继续使用。
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/4 p-4">
-              如遇支付或额度到账问题，请联系 {catalog?.support_email || "support@8xd.io"}。
+              如遇支付或额度到账问题，请联系{" "}
+              <a href={SUPPORT_EMAIL_HREF} className="text-emerald-200 hover:text-emerald-100">
+                {catalog?.support_email || SUPPORT_EMAIL}
+              </a>
+              。
             </div>
           </div>
         </section>

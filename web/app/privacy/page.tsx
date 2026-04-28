@@ -1,3 +1,5 @@
+import { SUPPORT_EMAIL, SUPPORT_EMAIL_HREF } from "@/lib/site";
+
 export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 md:py-14">
@@ -44,7 +46,11 @@ export default function PrivacyPage() {
           <section>
             <h2 className="mb-2 text-lg font-medium text-white/88">5. 联系方式</h2>
             <p>
-              若你对隐私处理方式有疑问，可通过站内反馈入口联系我们；相关说明更新后，将以本页最新内容为准。
+              若你对隐私处理方式有疑问，可通过支持邮箱{" "}
+              <a href={SUPPORT_EMAIL_HREF} className="text-emerald-200 hover:text-emerald-100">
+                {SUPPORT_EMAIL}
+              </a>{" "}
+              联系我们；相关说明更新后，将以本页最新内容为准。
             </p>
           </section>
         </div>
